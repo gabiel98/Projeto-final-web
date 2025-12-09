@@ -1,4 +1,4 @@
-# Projeto MVC
+# Projeto Final (Loja Pokemon)
 
 Este é um projeto demonstrativo em Node.js usando Express, EJS e MongoDB (Mongoose). O objetivo é um CRUD de usuários com cadastro, login, sessão e proteção de rotas.
 
@@ -38,15 +38,8 @@ npm install
 ```
 MONGODB_URI=mongodb://localhost:27017/projeto_mvc
 PORT=3000
-<<<<<<< HEAD
 SESSION_SECRET=sua_senha_aqui
-=======
-<<<<<<< HEAD
-SESSION_SECRET=sua_senha_aqui
-=======
-SESSION_SECRET= Coloque a senha aqui
->>>>>>> 0e42564b7ad8ca2c7d0b6722729054a7693bcb45
->>>>>>> parent of 8bc503b (new)
+
 ```
 
 Observação: Se for usar MongoDB Atlas, substitua `MONGODB_URI` pela sua string de conexão.
