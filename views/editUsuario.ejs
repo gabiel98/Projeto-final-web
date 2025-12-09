@@ -21,6 +21,16 @@
       <label>Cargo:</label>
       <input type="text" name="cargo_usuario" value="<%= user.cargo %>" required>
     </div>
+    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+    <div>
+      <label>Cargo:</label>
+      <select name="role">
+        <option value="customer" <%= user.role === 'customer' ? 'selected' : '' %>>Customer</option>
+        <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+      </select>
+    </div>
+    <% } %>
     <br>
     <button type="submit">💾 Salvar Alterações</button>
   </form>

@@ -26,6 +26,7 @@ const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
 // Importa middleware de autenticação (verifica sessão)
 const isAuth = require('./middleware/auth');
+const { isAdmin, canManageProducts } = require('./middleware/roles');
 
 // --- Configuração do Express ---
 app.set('view engine', 'ejs'); // engine de templates
@@ -38,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 // Configura o middleware de sessão antes das rotas para que
 // `req.session` esteja disponível em todos os handlers.
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'minha_chave_secreta_super_dificil',
+    secret: process.env.SESSION_SECRET || '5dc7b75a0a389f78e2c8588e8ceb3aabea0e28ed95a035c5cc286d52bc33d21c',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -52,17 +53,17 @@ app.use(session({
 
 // --- Rotas ---
 // Página inicial (apenas um link para a lista de usuários)
-// Página inicial: lista de produtos (ainda estáticos, cadastro futuro)
-app.get('/', (req, res) => {
-    const produtos = [
-        { id: 1, nome: 'Poké Ball', preco: 'R$ 15,00', descricao: 'Bola para capturar e armazenar Pokémon. Versão colecionável.' },
-        { id: 2, nome: 'Potion', preco: 'R$ 12,00', descricao: 'Restaura pontos de vida do seu Pokémon durante batalhas.' },
-        { id: 3, nome: 'Pikachu Plush', preco: 'R$ 89,90', descricao: 'Pelúcia oficial do Pikachu — ótima para colecionadores.' },
-        { id: 4, nome: 'Tcg Booster Pack', preco: 'R$ 19,90', descricao: 'Pacote de cartas para TCG Pokémon (aleatório).'} ,
-        { id: 5, nome: 'Eevee Keychain', preco: 'R$ 29,90', descricao: 'Chaveiro do Eevee em metal esmaltado.' }
-    ];
-    res.render('index', { produtos });
-});
+// Produtos: delegar para controller que usa o DB
+const productController = require('./controllers/productController');
+
+app.get('/', productController.list);
+
+// Rotas de gerenciamento de produto (manager/admin)
+app.get('/products/new', canManageProducts, productController.getNewForm);
+app.post('/products', canManageProducts, productController.create);
+app.get('/products/:id/edit', canManageProducts, productController.getEditForm);
+app.post('/products/:id/update', canManageProducts, productController.update);
+app.post('/products/:id/delete', canManageProducts, productController.remove);
 
 // Rotas de autenticação
 app.get('/login', (req, res) => {
@@ -103,8 +104,10 @@ app.use((req, res, next) => {
         // Pode ocorrer quando a rota foi ignorada; apenas define vazio
         res.locals.csrfToken = '';
     }
-    // Disponibiliza nome de usuário nas views, se houver sessão
+    // Disponibiliza nome/role/cargo nas views, se houver sessão
     res.locals.userName = req.session ? req.session.userName : null;
+    res.locals.userRole = req.session ? req.session.userRole : null;
+    res.locals.userCargo = req.session ? req.session.userCargo : null;
     next();
 });
 
@@ -113,13 +116,23 @@ app.post('/logout', authController.logout);
 // Rota para mostrar o perfil do usuário (requer sessão)
 app.get('/perfil', isAuth, userController.getPerfil);
 
+// Carrinho (session-based)
+const cartController = require('./controllers/cartController');
+app.get('/cart', cartController.view);
+app.post('/cart/add', cartController.add);
+app.post('/cart/remove', cartController.remove);
+
 // Rotas de usuário (CRUD)
-app.get('/users', isAuth, userController.getAllUsers);
+// Listar/editar/deletar usuários: apenas admin
+app.get('/users', isAdmin, userController.getAllUsers);
+app.get('/users/:id/edit', isAdmin, userController.getEditUserForm);
+app.post('/users/:id/update', isAdmin, userController.updateUser);
+app.post('/users/:id/delete', isAdmin, userController.deleteUser);
+
+// Criar usuário: aberto ao público (customer se não autenticado),
+// manager pode criar mas apenas customers; admin pode escolher role.
 app.get('/users/new', userController.getNewUserForm);
 app.post('/users', userController.createNewUser);
-app.get('/users/:id/edit', isAuth, userController.getEditUserForm);
-app.post('/users/:id/update', isAuth, userController.updateUser);
-app.post('/users/:id/delete', isAuth, userController.deleteUser);
 
 // --- Conexão com o MongoDB ---
 const mongoUri = process.env.MONGODB_URI || '';

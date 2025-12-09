@@ -9,17 +9,34 @@
   <%- include('partials/header') %>
   <main>
     <h1>PokeShop — Itens Pokémon</h1>
-    <p>Itens e colecionáveis do universo Pokémon. O cadastro de produtos poderá ser implementado futuramente.</p>
+    <p>Itens e colecionáveis do universo Pokémon.</p>
+    <p><a href="/cart">Ir para o carrinho</a></p>
     <div class="grid">
       <% produtos.forEach(function(p) { %>
         <div class="card">
           <h3><%= p.nome %></h3>
           <div class="price"><%= p.preco %></div>
           <p><%= p.descricao %></p>
-          <button disabled style="opacity:0.7">Em breve: detalhes</button>
+          <div style="margin-top:8px">
+            <% if (typeof userName !== 'undefined' && userName && userRole === 'customer') { %>
+              <form action="/cart/add" method="POST" style="display:inline">
+                <input type="hidden" name="productId" value="<%= p._id %>" />
+                <button type="submit">Adicionar ao carrinho</button>
+              </form>
+            <% } %>
+            <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %>
+              <a href="/products/<%= p._id %>/edit"><button>✏️ Editar</button></a>
+              <form action="/products/<%= p._id %>/delete" method="POST" style="display:inline">
+                <button type="submit" style="color:red">🗑️ Excluir</button>
+              </form>
+            <% } %>
+          </div>
         </div>
       <% }) %>
     </div>
+    <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %>
+      <p><a href="/products/new">➕ Adicionar novo produto</a></p>
+    <% } %>
   </main>
 </body>
 </html>

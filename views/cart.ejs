@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Carrinho</title>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <h1>Seu Carrinho</h1>
+    <% if (!cart || cart.length === 0) { %>
+      <p>Seu carrinho está vazio.</p>
+    <% } else { %>
+      <ul>
+        <% cart.forEach(function(item, idx) { %>
+          <li>
+            <strong><%= item.nome %></strong> - <%= item.preco %>
+            <form action="/cart/remove" method="POST" style="display:inline">
+              <input type="hidden" name="index" value="<%= idx %>" />
+              <button type="submit">Remover</button>
+            </form>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <p><a href="/">Continuar comprando</a></p>
+  </main>
+</body>
+</html>

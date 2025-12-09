@@ -13,21 +13,23 @@
 <body>
     <%- include('partials/header') %>
     <h1>Lista de Usuários</h1>
-    <a href="/users/new">➕ Adicionar Novo Usuário</a>
+    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+        <a href="/users/new">➕ Adicionar Novo Usuário</a>
+    <% } %>
     <ul>
         <% usuarios.forEach(function(user) { %>
             <li>
                 <strong><%= user.nome %></strong> - <%= user.cargo %>
                 <div class="actions">
-                    <!-- rota de edição (GET) -->
-                    <a href="/users/<%= user._id %>/edit"><button>✏️ Editar</button></a>
-                    <!-- formulário de exclusão (POST) -->
-                    <form action="/users/<%= user._id %>/delete" method="POST">
-                        <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                        <% } %>
-                        <button type="submit" style="color: red;">🗑️ Excluir</button>
-                    </form>
+                    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+                        <a href="/users/<%= user._id %>/edit"><button>✏️ Editar</button></a>
+                        <form action="/users/<%= user._id %>/delete" method="POST">
+                            <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                            <% } %>
+                            <button type="submit" style="color: red;">🗑️ Excluir</button>
+                        </form>
+                    <% } %>
                 </div>
             </li>
         <% }) %>

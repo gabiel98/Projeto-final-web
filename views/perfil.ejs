@@ -8,12 +8,21 @@
   <%- include('partials/header') %>
   <h1>Perfil</h1>
   <p>Olá, <strong><%= nome %></strong>!</p>
+  <p>
+    <a href="/cart">Meu carrinho</a> |
+    <a href="/">Voltar à loja</a>
+    <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %> |
+      <a href="/products/new">Cadastrar produto</a>
+    <% } %>
+    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %> |
+      <a href="/users">Gerenciar usuários</a>
+    <% } %>
+  </p>
   <form action="/logout" method="POST">
     <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <% } %>
     <button type="submit">Sair</button>
   </form>
-  <p><a href="/users">Voltar à lista</a></p>
 </body>
 </html>

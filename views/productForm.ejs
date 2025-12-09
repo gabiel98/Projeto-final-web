@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title><%= product ? 'Editar' : 'Novo' %> Produto</title>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <h1><%= product ? 'Editar' : 'Novo' %> Produto</h1>
+    <form action="<%= product ? ('/products/' + product._id + '/update') : '/products' %>" method="POST">
+      <div>
+        <label>Nome</label>
+        <input type="text" name="nome" value="<%= product ? product.nome : '' %>" required />
+      </div>
+      <div>
+        <label>Preço</label>
+        <input type="text" name="preco" value="<%= product ? product.preco : '' %>" required />
+      </div>
+      <div>
+        <label>Descrição</label>
+        <textarea name="descricao"><%= product ? product.descricao : '' %></textarea>
+      </div>
+      <button type="submit">Salvar</button>
+    </form>
+    <p><a href="/">Voltar à loja</a></p>
+  </main>
+</body>
+</html>

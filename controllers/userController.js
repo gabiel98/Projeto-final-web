@@ -40,12 +40,18 @@ const userController = {
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
-            // cria usuário no banco
+            // Role: admin pode escolher; manager e público criam sempre customer
+            let roleToSet = 'customer';
+            if (req.session && req.session.userRole === 'admin' && req.body.role) {
+                const allowed = ['admin','manager','customer'];
+                if (allowed.includes(req.body.role)) roleToSet = req.body.role;
+            }
             const createdUser = await User.create({
                 nome,
                 email,
                 cargo,
-                password: hashedPassword
+                password: hashedPassword,
+                role: roleToSet
             });
 
             // log
@@ -96,6 +102,12 @@ const userController = {
                 nome: req.body.nome_usuario,
                 cargo: req.body.cargo_usuario
             };
+
+            // Só admin pode alterar role
+            if (req.session && req.session.userRole === 'admin' && req.body.role) {
+                const allowed = ['admin','manager','customer'];
+                if (allowed.includes(req.body.role)) dadosAtualizados.role = req.body.role;
+            }
             await User.findByIdAndUpdate(id, dadosAtualizados);
             res.redirect('/users');
         } catch (error) {
