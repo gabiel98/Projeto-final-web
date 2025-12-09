@@ -52,8 +52,16 @@ app.use(session({
 
 // --- Rotas ---
 // Página inicial (apenas um link para a lista de usuários)
+// Página inicial: lista de produtos (ainda estáticos, cadastro futuro)
 app.get('/', (req, res) => {
-    res.send('<h1>Bem-vindo ao Restaurante MVC!</h1><p>Vá para <a href="/users">/users</a> para ver a lista</p>');
+    const produtos = [
+        { id: 1, nome: 'Poké Ball', preco: 'R$ 15,00', descricao: 'Bola para capturar e armazenar Pokémon. Versão colecionável.' },
+        { id: 2, nome: 'Potion', preco: 'R$ 12,00', descricao: 'Restaura pontos de vida do seu Pokémon durante batalhas.' },
+        { id: 3, nome: 'Pikachu Plush', preco: 'R$ 89,90', descricao: 'Pelúcia oficial do Pikachu — ótima para colecionadores.' },
+        { id: 4, nome: 'Tcg Booster Pack', preco: 'R$ 19,90', descricao: 'Pacote de cartas para TCG Pokémon (aleatório).'} ,
+        { id: 5, nome: 'Eevee Keychain', preco: 'R$ 29,90', descricao: 'Chaveiro do Eevee em metal esmaltado.' }
+    ];
+    res.render('index', { produtos });
 });
 
 // Rotas de autenticação
@@ -95,6 +103,8 @@ app.use((req, res, next) => {
         // Pode ocorrer quando a rota foi ignorada; apenas define vazio
         res.locals.csrfToken = '';
     }
+    // Disponibiliza nome de usuário nas views, se houver sessão
+    res.locals.userName = req.session ? req.session.userName : null;
     next();
 });
 

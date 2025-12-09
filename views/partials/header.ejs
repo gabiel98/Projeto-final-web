@@ -1,0 +1,18 @@
+<header style="background:#222;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
+  <div>
+    <a href="/" style="color:#fff;text-decoration:none;font-weight:bold;font-size:18px;">PokeShop</a>
+  </div>
+  <div>
+    <% if (typeof userName !== 'undefined' && userName) { %>
+      <span style="margin-right:12px">Olá, <strong><%= userName %></strong></span>
+      <form action="/logout" method="POST" style="display:inline;">
+        <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <% } %>
+        <button type="submit">Sair</button>
+      </form>
+    <% } else { %>
+      <a href="/login" style="color:#fff;text-decoration:none;background:#ff6b6b;padding:6px 10px;border-radius:4px;">Login</a>
+    <% } %>
+  </div>
+</header>

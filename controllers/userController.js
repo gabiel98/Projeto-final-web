@@ -1,17 +1,8 @@
-// controllers/userController.js
-// -------------------------------
-// Concentra a lógica que responde às requisições HTTP relacionadas
-// a usuários. Cada função corresponde a uma ação do CRUD.
-
 const User = require('../models/User');
 const bcrypt = require('bcryptjs'); // biblioteca para hash/compare de senhas
 const mongoose = require('mongoose');
-
 const userController = {
-    /**
-     * GET /users
-     * Busca todos os usuários no banco e renderiza a view `usersList`.
-     */
+    // GET /users
     getAllUsers: async (req, res) => {
         try {
             // .lean() converte os documentos para objetos JS simples (mais leve)
@@ -23,19 +14,10 @@ const userController = {
         }
     },
 
-    /**
-     * GET /users/new
-     * Exibe o formulário para criar um novo usuário.
-     */
-    getNewUserForm: (req, res) => {
-        // Passa query para que a view possa exibir mensagens de erro simples
-        res.render('formUsuario', { query: req.query });
-    },
+    // GET /users/new
+    getNewUserForm: (req, res) => res.render('formUsuario', { query: req.query }),
 
-    /**
-     * POST /users
-     * Cria um novo usuário a partir dos dados do formulário.
-     */
+    // POST /users
     createNewUser: async (req, res) => {
         try {
             // Desestrutura os campos do formulário (nomes usados na view)
@@ -49,16 +31,16 @@ const userController = {
             // Normaliza email para evitar duplicidade por case/espacos
             if (email) email = email.toLowerCase().trim();
 
-            // 1. Validação mínima
+            // validação mínima
             if (!email || !senha || !nome) {
                 return res.redirect('/users/new?erro=falta_email_ou_senha');
             }
 
-            // 2. Hashing da senha (bcrypt) — saltRounds = 10
+            // hashing (bcrypt)
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
-            // 3. Criar usuário no banco salvando o HASH em `password`
+            // cria usuário no banco
             const createdUser = await User.create({
                 nome,
                 email,
@@ -66,7 +48,7 @@ const userController = {
                 password: hashedPassword
             });
 
-            // Log no terminal para auditoria/desenvolvimento
+            // log
             console.log(`[${new Date().toISOString()}] Novo usuário criado: email=${email} id=${createdUser._id}`);
 
             // Após cadastro, manda para o login (fluxo comum)
@@ -83,26 +65,15 @@ const userController = {
 
     
 
-    /**
-     * GET /perfil
-     * Mostra a página de perfil do usuário usando o nome armazenado na sessão.
-     */
+    // GET /perfil
     getPerfil: (req, res) => {
-        // O nome "magicamente" está disponível aqui!
         const nomeDoUsuario = req.session.nome;
-        if (nomeDoUsuario) {
-            res.render('perfil', { nome: nomeDoUsuario });
-        } else {
-            // Se não tem sessão, não está logado
-            res.redirect('/login');
-        }
+        if (nomeDoUsuario) return res.render('perfil', { nome: nomeDoUsuario });
+        return res.redirect('/login');
     },
 
 
-    /**
-     * GET /users/:id/edit
-     * Exibe o formulário de edição com os dados do usuário preenchidos.
-     */
+    // GET /users/:id/edit
     getEditUserForm: async (req, res) => {
         try {
             const id = req.params.id;
@@ -116,10 +87,7 @@ const userController = {
         }
     },
 
-    /**
-     * POST /users/:id/update
-     * Aplica as alterações do formulário no documento do MongoDB.
-     */
+    // POST /users/:id/update
     updateUser: async (req, res) => {
         try {
             const id = req.params.id;
@@ -136,10 +104,7 @@ const userController = {
         }
     },
 
-    /**
-     * POST /users/:id/delete
-     * Remove o usuário do banco.
-     */
+    // POST /users/:id/delete
     deleteUser: async (req, res) => {
         try {
             const id = req.params.id;

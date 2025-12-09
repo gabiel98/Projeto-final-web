@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Produtos</title>
+  <!-- Estilos podem ser movidos para um arquivo CSS separado -->
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <h1>PokeShop — Itens Pokémon</h1>
+    <p>Itens e colecionáveis do universo Pokémon. O cadastro de produtos poderá ser implementado futuramente.</p>
+    <div class="grid">
+      <% produtos.forEach(function(p) { %>
+        <div class="card">
+          <h3><%= p.nome %></h3>
+          <div class="price"><%= p.preco %></div>
+          <p><%= p.descricao %></p>
+          <button disabled style="opacity:0.7">Em breve: detalhes</button>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+</body>
+</html>
