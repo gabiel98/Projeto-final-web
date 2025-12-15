@@ -1,6 +1,19 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs'); // biblioteca para hash/compare de senhas
 const mongoose = require('mongoose');
+
+// Cargos permitidos para funcionários (role: funcionario)
+const cargosPermitidos = ['Gerente', 'Repositor', 'Atendente'];
+
+// Normaliza cargo para Title Case somente se estiver permitido
+function normalizarCargo(cargo) {
+    if (!cargo) return '';
+    const valor = cargo.toString().trim().toLowerCase();
+    const encontrado = cargosPermitidos.find(
+        permitido => permitido.toLowerCase() === valor
+    );
+    return encontrado || '';
+}
 const userController = {
     // GET /users
     getAllUsers: async (req, res) => {
@@ -15,7 +28,7 @@ const userController = {
     },
 
     // GET /users/new
-    getNewUserForm: (req, res) => res.render('formUsuario', { query: req.query }),
+    getNewUserForm: (req, res) => res.render('formUsuario', { query: req.query, cargosPermitidos }),
 
     // POST /users
     createNewUser: async (req, res) => {
@@ -40,16 +53,22 @@ const userController = {
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
-            // Role: admin pode escolher; manager e público criam sempre customer
-            let roleToSet = 'customer';
-            if (req.session && req.session.userRole === 'admin' && req.body.role) {
-                const allowed = ['admin','manager','customer'];
+            // Role: dono pode escolher; funcionario e público criam sempre comprador
+            let roleToSet = 'comprador';
+            if (req.session && req.session.userRole === 'dono' && req.body.role) {
+                const allowed = ['dono','funcionario','comprador'];
                 if (allowed.includes(req.body.role)) roleToSet = req.body.role;
+            }
+
+            // Cargo: apenas funcionários precisam ter cargo permitido
+            const cargoNormalizado = normalizarCargo(cargo);
+            if (roleToSet === 'funcionario' && !cargoNormalizado) {
+                return res.redirect('/users/new?erro=cargo_invalido');
             }
             const createdUser = await User.create({
                 nome,
                 email,
-                cargo,
+                cargo: cargoNormalizado,
                 password: hashedPassword,
                 role: roleToSet
             });
@@ -86,7 +105,7 @@ const userController = {
             if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).send('ID inválido');
             const user = await User.findById(id).lean();
             if (!user) return res.status(404).send('Usuário não encontrado');
-            res.render('editUsuario', { user });
+            res.render('editUsuario', { user, cargosPermitidos });
         } catch (error) {
             console.error('Erro em getEditUserForm:', error);
             res.status(500).send('Erro ao carregar formulário de edição');
@@ -98,16 +117,30 @@ const userController = {
         try {
             const id = req.params.id;
             if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).send('ID inválido');
+
+            const userAtual = await User.findById(id);
+            if (!userAtual) return res.status(404).send('Usuário não encontrado');
+
             const dadosAtualizados = {
-                nome: req.body.nome_usuario,
-                cargo: req.body.cargo_usuario
+                nome: req.body.nome_usuario
             };
 
-            // Só admin pode alterar role
-            if (req.session && req.session.userRole === 'admin' && req.body.role) {
-                const allowed = ['admin','manager','customer'];
-                if (allowed.includes(req.body.role)) dadosAtualizados.role = req.body.role;
+            // Só dono pode alterar role
+            let roleEfetiva = userAtual.role;
+            if (req.session && req.session.userRole === 'dono' && req.body.role) {
+                const allowed = ['dono','funcionario','comprador'];
+                if (allowed.includes(req.body.role)) roleEfetiva = req.body.role;
             }
+
+            // Cargo: obrigatório e validado apenas para funcionários
+            const cargoNormalizado = normalizarCargo(req.body.cargo_usuario);
+            if (roleEfetiva === 'funcionario' && !cargoNormalizado) {
+                return res.redirect(`/users/${id}/edit?erro=cargo_invalido`);
+            }
+
+            dadosAtualizados.role = roleEfetiva;
+            dadosAtualizados.cargo = cargoNormalizado;
+
             await User.findByIdAndUpdate(id, dadosAtualizados);
             res.redirect('/users');
         } catch (error) {

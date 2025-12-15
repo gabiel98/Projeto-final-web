@@ -10,6 +10,11 @@
   <main>
     <h1>PokeShop — Itens Pokémon</h1>
     <p>Itens e colecionáveis do universo Pokémon.</p>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
+      <p>Conectado como: <strong><%= userName %></strong><% if (typeof userCargo !== 'undefined' && userCargo) { %> (<%= userCargo %>)<% } %></p>
+    <% } else { %>
+      <p><a href="/login">Faça login</a> ou <a href="/users/new">crie sua conta</a> para aproveitar mais recursos.</p>
+    <% } %>
     <p><a href="/cart">Ir para o carrinho</a></p>
     <div class="grid">
       <% produtos.forEach(function(p) { %>
@@ -18,15 +23,21 @@
           <div class="price"><%= p.preco %></div>
           <p><%= p.descricao %></p>
           <div style="margin-top:8px">
-            <% if (typeof userName !== 'undefined' && userName && userRole === 'customer') { %>
+            <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
               <form action="/cart/add" method="POST" style="display:inline">
                 <input type="hidden" name="productId" value="<%= p._id %>" />
+                <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <% } %>
                 <button type="submit">Adicionar ao carrinho</button>
               </form>
             <% } %>
-            <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %>
+            <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %>
               <a href="/products/<%= p._id %>/edit"><button>✏️ Editar</button></a>
               <form action="/products/<%= p._id %>/delete" method="POST" style="display:inline">
+                <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <% } %>
                 <button type="submit" style="color:red">🗑️ Excluir</button>
               </form>
             <% } %>
@@ -34,7 +45,7 @@
         </div>
       <% }) %>
     </div>
-    <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %>
+    <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %>
       <p><a href="/products/new">➕ Adicionar novo produto</a></p>
     <% } %>
   </main>

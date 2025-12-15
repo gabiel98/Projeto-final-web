@@ -18,20 +18,28 @@
       <input type="text" name="nome_usuario" value="<%= user.nome %>" required>
     </div>
     <div>
-      <label>Cargo:</label>
-      <input type="text" name="cargo_usuario" value="<%= user.cargo %>" required>
+      <label>Cargo (apenas para funcionários):</label>
+      <select name="cargo_usuario">
+        <option value="">Selecione (obrigatório para funcionários)</option>
+        <% (cargosPermitidos || []).forEach(function(c) { %>
+          <option value="<%= c %>" <%= (user.cargo && user.cargo.toLowerCase() === c.toLowerCase()) ? 'selected' : '' %>><%= c %></option>
+        <% }) %>
+      </select>
     </div>
-    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
     <div>
-      <label>Cargo:</label>
+      <label>Permissão:</label>
       <select name="role">
-        <option value="customer" <%= user.role === 'customer' ? 'selected' : '' %>>Customer</option>
-        <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
-        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+        <option value="comprador" <%= user.role === 'comprador' ? 'selected' : '' %>>Comprador</option>
+        <option value="funcionario" <%= user.role === 'funcionario' ? 'selected' : '' %>>Funcionário</option>
+        <option value="dono" <%= user.role === 'dono' ? 'selected' : '' %>>Dono</option>
       </select>
     </div>
     <% } %>
     <br>
+    <% if (typeof query !== 'undefined' && query.erro === 'cargo_invalido') { %>
+      <p style="color:red">Escolha um cargo válido para funcionários.</p>
+    <% } %>
     <button type="submit">💾 Salvar Alterações</button>
   </form>
   <br>

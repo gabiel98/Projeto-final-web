@@ -1,19 +1,25 @@
 <header style="background:#222;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
   <div style="display:flex;gap:12px;align-items:center;">
     <a href="/" style="color:#fff;text-decoration:none;font-weight:bold;font-size:18px;">PokeShop</a>
-    <% if (typeof userName !== 'undefined' && userName) { %>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
+      <span style="background:#3a3a3a;color:#fff;padding:2px 8px;border-radius:999px;font-size:12px;">
+        Logado como: <strong><%= userName %></strong>
+        <% if (typeof userCargo !== 'undefined' && userCargo) { %> (<%= userCargo %>)<% } %>
+      </span>
+    <% } %>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
       <a href="/perfil" style="color:#fff;text-decoration:none;">Perfil</a>
     <% } %>
     <a href="/cart" style="color:#fff;text-decoration:none;">Carrinho</a>
-    <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %>
-      <a href="/products/new" style="color:#fff;text-decoration:none;">Cadastrar produto</a>
+    <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %>
+      <a href="/inventory" style="color:#fff;text-decoration:none;">Inventário da loja</a>
     <% } %>
-    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
       <a href="/users" style="color:#fff;text-decoration:none;">Gerenciar usuários</a>
     <% } %>
   </div>
   <div>
-    <% if (typeof userName !== 'undefined' && userName) { %>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
       <span style="margin-right:12px">Olá, <strong><%= userName %></strong><% if (typeof userCargo !== 'undefined' && userCargo) { %> (<%= userCargo %>)<% } %></span>
       <form action="/logout" method="POST" style="display:inline;">
         <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>

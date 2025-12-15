@@ -13,7 +13,7 @@
 <body>
     <%- include('partials/header') %>
     <h1>Lista de Usuários</h1>
-    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
         <a href="/users/new">➕ Adicionar Novo Usuário</a>
     <% } %>
     <ul>
@@ -21,7 +21,7 @@
             <li>
                 <strong><%= user.nome %></strong> - <%= user.cargo %>
                 <div class="actions">
-                    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+                    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
                         <a href="/users/<%= user._id %>/edit"><button>✏️ Editar</button></a>
                         <form action="/users/<%= user._id %>/delete" method="POST">
                             <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>

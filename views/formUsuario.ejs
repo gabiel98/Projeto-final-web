@@ -18,8 +18,13 @@
 			</div>
 
 			<div>
-				<label for="cargo">Cargo:</label>
-				<input type="text" id="cargo" name="cargo_usuario" required />
+				<label for="cargo">Cargo (apenas para funcionários):</label>
+				<select id="cargo" name="cargo_usuario">
+					<option value="">Selecione (obrigatório para funcionários)</option>
+					<% (cargosPermitidos || []).forEach(function(c) { %>
+						<option value="<%= c %>"><%= c %></option>
+					<% }) %>
+				</select>
 			</div>
 
 			<!-- Campos opcionais para autenticação -->
@@ -32,13 +37,13 @@
 				<input type="password" id="senha" name="senha_usuario" required />
 			</div>
 
-			<% if (typeof userRole !== 'undefined' && userRole === 'admin') { %>
+            <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
 				<div>
-					<label for="role">Cargo:</label>
+					<label for="role">Permissão:</label>
 					<select id="role" name="role">
-						<option value="customer" selected>Customer</option>
-						<option value="manager">Manager</option>
-						<option value="admin">Admin</option>
+						<option value="comprador" selected>Comprador</option>
+						<option value="funcionario">Funcionário</option>
+						<option value="dono">Dono</option>
 					</select>
 				</div>
 			<% } %>
@@ -47,6 +52,8 @@
 					<p style="color: red">Preencha nome, email e senha.</p>
 				<% } else if (query.erro === 'email_ja_cadastrado') { %>
 					<p style="color: red">Este email já está cadastrado.</p>
+				<% } else if (query.erro === 'cargo_invalido') { %>
+					<p style="color: red">Escolha um cargo válido para funcionários.</p>
 				<% } %>
 			<% } %>
 

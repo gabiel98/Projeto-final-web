@@ -13,18 +13,24 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(senha, user.password || '');
     if (!isMatch) return res.redirect('/login?erro=senha');
 
-    // cria a sessão
-    req.session.userId = user._id;
-    req.session.userName = user.nome;
-    req.session.userRole = user.role || 'customer';
-    req.session.userCargo = user.cargo || '';
-    // Mantém compatibilidade com outros pontos do app
-    req.session.nome = user.nome;
+    // proteger contra session fixation e garantir persistência antes do redirect
+    req.session.regenerate(err => {
+      if (err) {
+        console.error('Erro ao regenerar sessão:', err);
+        return res.status(500).send('Erro de sessão');
+      }
 
-    // log
-    console.log(`[${new Date().toISOString()}] Login bem-sucedido: email=${user.email} id=${user._id} ip=${req.ip}`);
+      req.session.userId = user._id;
+      req.session.userName = user.nome;
+      req.session.userRole = user.role || 'comprador';
+      req.session.userCargo = user.cargo || '';
+      req.session.nome = user.nome;
 
-    return res.redirect('/perfil');
+      // log
+      console.log(`[${new Date().toISOString()}] Login bem-sucedido: email=${user.email} id=${user._id} ip=${req.ip}`);
+
+      req.session.save(() => res.redirect('/perfil'));
+    });
   } catch (err) {
     console.error('Erro em authController.login:', err);
     return res.status(500).send('Erro no login');

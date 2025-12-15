@@ -11,10 +11,10 @@
   <p>
     <a href="/cart">Meu carrinho</a> |
     <a href="/">Voltar à loja</a>
-    <% if (typeof userRole !== 'undefined' && (userRole === 'admin' || userRole === 'manager')) { %> |
-      <a href="/products/new">Cadastrar produto</a>
+    <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %> |
+      <a href="/inventory">Inventário da loja</a>
     <% } %>
-    <% if (typeof userRole !== 'undefined' && userRole === 'admin') { %> |
+    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %> |
       <a href="/users">Gerenciar usuários</a>
     <% } %>
   </p>

@@ -5,6 +5,7 @@
 
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 // Segurança de headers HTTP
 const helmet = require('helmet');
 // Rate limiter para proteger rotas sensíveis (ex.: login)
@@ -39,31 +40,25 @@ app.use(express.urlencoded({ extended: true }));
 // Configura o middleware de sessão antes das rotas para que
 // `req.session` esteja disponível em todos os handlers.
 app.use(session({
-    secret: process.env.SESSION_SECRET || '5dc7b75a0a389f78e2c8588e8ceb3aabea0e28ed95a035c5cc286d52bc33d21c',
+    secret: process.env.SESSION_SECRET || 'minha_chave_secreta_super_dificil',
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 60 * 60 * 24 * 30 // 30 dias em segundos
+    }),
     resave: false,
     saveUninitialized: false,
+    rolling: true, // renova o vencimento a cada requisição
     cookie: {
-        // Em produção, defina NODE_ENV=production para ativar `secure` (requer HTTPS)
         secure: (process.env.NODE_ENV === 'production'),
-        httpOnly: true, // impede acesso via JavaScript no cliente
-        sameSite: 'lax', // reduz risco de CSRF mantendo compatibilidade com navegação normal
-        maxAge: 3600000 // 1 hora em milissegundos
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 30 // 30 dias em ms
     }
 }));
 
 // --- Rotas ---
-// Página inicial (apenas um link para a lista de usuários)
 // Produtos: delegar para controller que usa o DB
 const productController = require('./controllers/productController');
-
-app.get('/', productController.list);
-
-// Rotas de gerenciamento de produto (manager/admin)
-app.get('/products/new', canManageProducts, productController.getNewForm);
-app.post('/products', canManageProducts, productController.create);
-app.get('/products/:id/edit', canManageProducts, productController.getEditForm);
-app.post('/products/:id/update', canManageProducts, productController.update);
-app.post('/products/:id/delete', canManageProducts, productController.remove);
 
 // Rotas de autenticação
 app.get('/login', (req, res) => {
@@ -108,8 +103,28 @@ app.use((req, res, next) => {
     res.locals.userName = req.session ? req.session.userName : null;
     res.locals.userRole = req.session ? req.session.userRole : null;
     res.locals.userCargo = req.session ? req.session.userCargo : null;
+    res.locals.isAuthenticated = !!(req.session && req.session.userId);
     next();
 });
+
+// Registro das rotas de produtos e home APÓS middlewares (session/csrf/locals)
+app.get('/', productController.list);
+app.get('/inventory', canManageProducts, productController.inventory);
+
+// Rotas de gerenciamento de produto (funcionario/dono)
+app.get('/products/new', canManageProducts, productController.getNewForm);
+app.post('/products', canManageProducts, productController.create);
+app.get('/products/:id/edit', canManageProducts, productController.getEditForm);
+app.post('/products/:id/update', canManageProducts, productController.update);
+app.post('/products/:id/delete', canManageProducts, productController.remove);
+
+// Debug opcional de sessão (ativar com DEBUG_SESS=1 no .env)
+if (process.env.DEBUG_SESS === '1') {
+    app.use((req, res, next) => {
+        console.log(`[sess] ${new Date().toISOString()} ${req.method} ${req.originalUrl} sid=${req.sessionID} uid=${req.session && req.session.userId ? req.session.userId : 'anon'}`);
+        next();
+    });
+}
 
 app.post('/login', loginLimiter, authController.login);
 app.post('/logout', authController.logout);
@@ -123,14 +138,14 @@ app.post('/cart/add', cartController.add);
 app.post('/cart/remove', cartController.remove);
 
 // Rotas de usuário (CRUD)
-// Listar/editar/deletar usuários: apenas admin
+// Listar/editar/deletar usuários: apenas dono
 app.get('/users', isAdmin, userController.getAllUsers);
 app.get('/users/:id/edit', isAdmin, userController.getEditUserForm);
 app.post('/users/:id/update', isAdmin, userController.updateUser);
 app.post('/users/:id/delete', isAdmin, userController.deleteUser);
 
-// Criar usuário: aberto ao público (customer se não autenticado),
-// manager pode criar mas apenas customers; admin pode escolher role.
+// Criar usuário: aberto ao público (comprador se não autenticado),
+// funcionario pode criar mas apenas compradores; dono pode escolher role.
 app.get('/users/new', userController.getNewUserForm);
 app.post('/users', userController.createNewUser);
 

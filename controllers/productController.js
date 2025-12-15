@@ -1,6 +1,16 @@
 const Product = require('../models/Product');
 
 const productController = {
+  // página de inventário com ações de gestão (dono/funcionario)
+  inventory: async (req, res) => {
+    try {
+      const produtos = await Product.find().lean();
+      return res.render('inventory', { produtos });
+    } catch (err) {
+      console.error('Erro carregando inventário:', err);
+      return res.status(500).send('Erro ao carregar inventário');
+    }
+  },
   // lista produtos para a home
   list: async (req, res) => {
     try {
