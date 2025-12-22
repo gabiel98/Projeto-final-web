@@ -1,6 +1,21 @@
 const Product = require('../models/Product');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+// Função auxiliar para deletar arquivo de imagem
+function deleteImageFile(imagemPath) {
+  if (!imagemPath) return;
+  try {
+    const filePath = path.join(__dirname, '..', 'public', imagemPath);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log(`Arquivo deletado: ${filePath}`);
+    }
+  } catch (err) {
+    console.error('Erro ao deletar arquivo de imagem:', err);
+  }
+}
 
 // Configuração de upload com multer
 const storage = multer.diskStorage({
@@ -85,6 +100,8 @@ const productController = {
   update: async (req, res) => {
     try {
       const { nome, preco, descricao, estoque, tipo } = req.body;
+      const produtoAtual = await Product.findById(req.params.id);
+      
       const dadosAtualizados = { 
         nome, 
         preco: parseFloat(preco) || 0, 
@@ -92,9 +109,15 @@ const productController = {
         estoque: parseInt(estoque) || 0,
         tipo
       };
+      
       if (req.file) {
+        // Se há imagem antiga, deletar antes de salvar a nova
+        if (produtoAtual && produtoAtual.imagem) {
+          deleteImageFile(produtoAtual.imagem);
+        }
         dadosAtualizados.imagem = '/uploads/' + req.file.filename;
       }
+      
       await Product.findByIdAndUpdate(req.params.id, dadosAtualizados);
       return res.redirect('/');
     } catch (err) {
@@ -105,6 +128,10 @@ const productController = {
 
   remove: async (req, res) => {
     try {
+      const prod = await Product.findById(req.params.id);
+      if (prod && prod.imagem) {
+        deleteImageFile(prod.imagem);
+      }
       await Product.findByIdAndDelete(req.params.id);
       return res.redirect('/');
     } catch (err) {
