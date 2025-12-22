@@ -19,8 +19,13 @@
     <div class="grid">
       <% produtos.forEach(function(p) { %>
         <div class="card">
+          <% if (p.imagem) { %>
+            <img src="<%= p.imagem %>" alt="<%= p.nome %>" style="max-width:100%;height:auto;border-radius:4px;margin-bottom:8px" />
+          <% } %>
           <h3><%= p.nome %></h3>
-          <div class="price"><%= p.preco %></div>
+          <div class="price">R$ <%= typeof p.preco === 'number' ? p.preco.toFixed(2) : p.preco %></div>
+          <p><strong>Tipo:</strong> <%= p.tipo || 'Outro' %></p>
+          <p><strong>Estoque:</strong> <%= p.estoque || 0 %> unidades</p>
           <p><%= p.descricao %></p>
           <div style="margin-top:8px">
             <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
@@ -49,5 +54,6 @@
       <p><a href="/products/new">➕ Adicionar novo produto</a></p>
     <% } %>
   </main>
+  <%- include('partials/footer') %>
 </body>
 </html>

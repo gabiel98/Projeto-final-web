@@ -16,8 +16,12 @@
       <ul>
         <% produtos.forEach(function(p) { %>
           <li>
-            <strong><%= p.nome %></strong> — <%= p.preco %><br/>
-            <small><%= p.descricao %></small>
+            <% if (p.imagem) { %>
+              <img src="<%= p.imagem %>" alt="<%= p.nome %>" style="max-width:80px;height:auto;vertical-align:middle;margin-right:10px" />
+            <% } %>
+            <strong><%= p.nome %></strong> — R$ <%= typeof p.preco === 'number' ? p.preco.toFixed(2) : p.preco %>
+            <br/>
+            <small>Tipo: <%= p.tipo || 'Outro' %> | Estoque: <%= p.estoque || 0 %> | <%= p.descricao %></small>
             <div style="margin-top:6px">
               <a href="/products/<%= p._id %>/edit"><button>✏️ Editar</button></a>
               <form action="/products/<%= p._id %>/delete" method="POST" style="display:inline">
@@ -32,5 +36,6 @@
       </ul>
     <% } %>
   </main>
+  <%- include('partials/footer') %>
 </body>
 </html>

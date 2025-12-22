@@ -33,10 +33,16 @@ const { isAdmin, canManageProducts } = require('./middleware/roles');
 app.set('view engine', 'ejs'); // engine de templates
 app.set('views', './views'); // pasta das views
 
+// Servir arquivos estáticos (imagens de produtos)
+app.use('/uploads', express.static('public/uploads'));
+
 // Middleware: interpreta bodies de formulários (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
 // --- Sessão ---
+// Marca de inicialização do servidor para invalidar sessões antigas
+const serverStartTime = Date.now();
+
 // Configura o middleware de sessão antes das rotas para que
 // `req.session` esteja disponível em todos os handlers.
 app.use(session({
@@ -55,6 +61,22 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 30 // 30 dias em ms
     }
 }));
+
+// Middleware: invalida sessões criadas antes do início do servidor
+app.use((req, res, next) => {
+    if (req.session && req.session.userId) {
+        if (!req.session.serverStart || req.session.serverStart < serverStartTime) {
+            return req.session.destroy((err) => {
+                if (err) console.error('Erro ao destruir sessão antiga:', err);
+                res.clearCookie('connect.sid', { path: '/' });
+                // Marca que a sessão foi invalidada para pular CSRF
+                req.sessionInvalidated = true;
+                next();
+            });
+        }
+    }
+    next();
+});
 
 // --- Rotas ---
 // Produtos: delegar para controller que usa o DB
@@ -79,17 +101,22 @@ const loginLimiter = rateLimit({
     }
 });
 
-// CSRF protection: usamos tokens para rotas POST, exceto /login (caso especial)
+// CSRF protection: usamos tokens para rotas POST, exceto /login e rotas com upload
 const csrfProtection = csurf();
 
-// Middleware que aplica CSRF protection exceto para POST /login
-function csrfUnlessLogin(req, res, next) {
+// Middleware que aplica CSRF protection exceto para rotas específicas
+function csrfUnlessExcluded(req, res, next) {
+    // Se sessão foi invalidada, não aplicar CSRF (usuário será redirecionado para login)
+    if (req.sessionInvalidated) return next();
+    // Excluir: POST /login e rotas de produtos com upload (multipart/form-data)
     if (req.path === '/login' && req.method === 'POST') return next();
+    if (req.path === '/products' && req.method === 'POST') return next();
+    if (req.path.match(/^\/products\/[^\/]+\/update$/) && req.method === 'POST') return next();
     return csrfProtection(req, res, next);
 }
 
 // Aplicar o middleware CSRF depois da sessão e antes das rotas que precisam
-app.use(csrfUnlessLogin);
+app.use(csrfUnlessExcluded);
 
 // Disponibiliza o token nas views (se presente)
 app.use((req, res, next) => {
@@ -113,9 +140,9 @@ app.get('/inventory', canManageProducts, productController.inventory);
 
 // Rotas de gerenciamento de produto (funcionario/dono)
 app.get('/products/new', canManageProducts, productController.getNewForm);
-app.post('/products', canManageProducts, productController.create);
+app.post('/products', canManageProducts, productController.upload.single('imagem'), productController.create);
 app.get('/products/:id/edit', canManageProducts, productController.getEditForm);
-app.post('/products/:id/update', canManageProducts, productController.update);
+app.post('/products/:id/update', canManageProducts, productController.upload.single('imagem'), productController.update);
 app.post('/products/:id/delete', canManageProducts, productController.remove);
 
 // Debug opcional de sessão (ativar com DEBUG_SESS=1 no .env)

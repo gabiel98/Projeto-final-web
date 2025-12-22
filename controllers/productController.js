@@ -1,4 +1,31 @@
 const Product = require('../models/Product');
+const multer = require('multer');
+const path = require('path');
+
+// Configuração de upload com multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    if (mimetype && extname) return cb(null, true);
+    cb(new Error('Apenas imagens são permitidas!'));
+  }
+});
+
+const tiposProduto = ['Pokémon', 'Poké Ball', 'Medicamento', 'Berry', 'TM/HM', 'Item de Batalha', 'Outro'];
 
 const productController = {
   // página de inventário com ações de gestão (dono/funcionario)
@@ -23,12 +50,20 @@ const productController = {
     }
   },
 
-  getNewForm: (req, res) => res.render('productForm', { product: null }),
+  getNewForm: (req, res) => res.render('productForm', { product: null, tiposProduto }),
 
   create: async (req, res) => {
     try {
-      const { nome, preco, descricao } = req.body;
-      await Product.create({ nome, preco, descricao });
+      const { nome, preco, descricao, estoque, tipo } = req.body;
+      const imagem = req.file ? '/uploads/' + req.file.filename : '';
+      await Product.create({ 
+        nome, 
+        preco: parseFloat(preco) || 0, 
+        descricao, 
+        estoque: parseInt(estoque) || 0,
+        tipo,
+        imagem 
+      });
       return res.redirect('/');
     } catch (err) {
       console.error('Erro criando produto:', err);
@@ -40,7 +75,7 @@ const productController = {
     try {
       const prod = await Product.findById(req.params.id).lean();
       if (!prod) return res.status(404).send('Produto não encontrado');
-      return res.render('productForm', { product: prod });
+      return res.render('productForm', { product: prod, tiposProduto });
     } catch (err) {
       console.error('Erro getEditForm:', err);
       return res.status(500).send('Erro ao carregar formulário');
@@ -49,8 +84,18 @@ const productController = {
 
   update: async (req, res) => {
     try {
-      const { nome, preco, descricao } = req.body;
-      await Product.findByIdAndUpdate(req.params.id, { nome, preco, descricao });
+      const { nome, preco, descricao, estoque, tipo } = req.body;
+      const dadosAtualizados = { 
+        nome, 
+        preco: parseFloat(preco) || 0, 
+        descricao,
+        estoque: parseInt(estoque) || 0,
+        tipo
+      };
+      if (req.file) {
+        dadosAtualizados.imagem = '/uploads/' + req.file.filename;
+      }
+      await Product.findByIdAndUpdate(req.params.id, dadosAtualizados);
       return res.redirect('/');
     } catch (err) {
       console.error('Erro update produto:', err);
@@ -70,3 +115,4 @@ const productController = {
 };
 
 module.exports = productController;
+module.exports.upload = upload;

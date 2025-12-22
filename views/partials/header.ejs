@@ -2,12 +2,6 @@
   <div style="display:flex;gap:12px;align-items:center;">
     <a href="/" style="color:#fff;text-decoration:none;font-weight:bold;font-size:18px;">PokeShop</a>
     <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
-      <span style="background:#3a3a3a;color:#fff;padding:2px 8px;border-radius:999px;font-size:12px;">
-        Logado como: <strong><%= userName %></strong>
-        <% if (typeof userCargo !== 'undefined' && userCargo) { %> (<%= userCargo %>)<% } %>
-      </span>
-    <% } %>
-    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
       <a href="/perfil" style="color:#fff;text-decoration:none;">Perfil</a>
     <% } %>
     <a href="/cart" style="color:#fff;text-decoration:none;">Carrinho</a>

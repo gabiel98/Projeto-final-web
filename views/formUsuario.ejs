@@ -17,16 +17,6 @@
 				<input type="text" id="nome" name="nome_usuario" required />
 			</div>
 
-			<div>
-				<label for="cargo">Cargo (apenas para funcionários):</label>
-				<select id="cargo" name="cargo_usuario">
-					<option value="">Selecione (obrigatório para funcionários)</option>
-					<% (cargosPermitidos || []).forEach(function(c) { %>
-						<option value="<%= c %>"><%= c %></option>
-					<% }) %>
-				</select>
-			</div>
-
 			<!-- Campos opcionais para autenticação -->
 			<div>
 				<label for="email">Email (obrigatório):</label>
@@ -37,9 +27,19 @@
 				<input type="password" id="senha" name="senha_usuario" required />
 			</div>
 
-            <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
-				<div>
-					<label for="role">Permissão:</label>
+			<% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
+			<div>
+				<label for="cargo">Cargo (apenas para funcionários):</label>
+				<select id="cargo" name="cargo_usuario">
+					<option value="">Selecione (obrigatório para funcionários)</option>
+					<% (cargosPermitidos || []).forEach(function(c) { %>
+						<option value="<%= c %>"><%= c %></option>
+					<% }) %>
+				</select>
+			</div>
+
+			<div>
+				<label for="role">Permissão:</label>
 					<select id="role" name="role">
 						<option value="comprador" selected>Comprador</option>
 						<option value="funcionario">Funcionário</option>
@@ -47,6 +47,7 @@
 					</select>
 				</div>
 			<% } %>
+			
 			<% if (typeof query !== 'undefined') { %>
 				<% if (query.erro === 'falta_email_ou_senha') { %>
 					<p style="color: red">Preencha nome, email e senha.</p>
@@ -62,4 +63,5 @@
 
 		<p><a href="/users">Voltar para lista</a></p>
 	</body>
+	<%- include('partials/footer') %>
 </html>

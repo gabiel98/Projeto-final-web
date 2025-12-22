@@ -25,6 +25,7 @@ exports.login = async (req, res) => {
       req.session.userRole = user.role || 'comprador';
       req.session.userCargo = user.cargo || '';
       req.session.nome = user.nome;
+      req.session.serverStart = Date.now();
 
       // log
       console.log(`[${new Date().toISOString()}] Login bem-sucedido: email=${user.email} id=${user._id} ip=${req.ip}`);
