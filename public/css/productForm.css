@@ -1,0 +1,73 @@
+/* =========================
+   FORM PRODUTO
+========================= */
+
+.product-form-container {
+  max-width: 600px;
+  margin: 60px auto;
+  background: var(--bg-card);
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.product-form-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-form .form-group {
+  margin-bottom: 14px;
+}
+
+.product-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.product-form input,
+.product-form select,
+.product-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.product-form input:focus,
+.product-form select:focus,
+.product-form textarea:focus {
+  outline: 2px solid var(--secondary);
+}
+
+/* IMAGEM */
+.image-preview {
+  margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 150px;
+  border-radius: 10px;
+  margin-top: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* BOTÃO */
+.product-form button {
+  margin-top: 12px;
+}
+
+/* LINK VOLTAR */
+.back-link {
+  text-align: center;
+  margin-top: 18px;
+}
