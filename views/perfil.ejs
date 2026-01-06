@@ -3,27 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <title>Perfil</title>
+  <link rel="stylesheet" href="/css/perfil.css">
 </head>
 <body>
   <%- include('partials/header') %>
-  <h1>Perfil</h1>
-  <p>Olá, <strong><%= nome %></strong>!</p>
-  <p>
-    <a href="/cart">Meu carrinho</a> |
-    <a href="/">Voltar à loja</a>
-    <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %> |
-      <a href="/inventory">Inventário da loja</a>
-    <% } %>
-    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %> |
-      <a href="/users">Gerenciar usuários</a>
-    <% } %>
-  </p>
-  <form action="/logout" method="POST">
-    <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    <% } %>
-    <button type="submit">Sair</button>
-  </form>
+
+  <main class="profile-container">
+    <h1>Meu Perfil</h1>
+
+    <p class="profile-welcome">
+      Olá, <strong><%= nome %></strong>!
+    </p>
+
+    <div class="profile-links">
+      <a href="/cart">🛒 Meu carrinho</a>
+      <a href="/">🏬 Voltar à loja</a>
+
+      <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %>
+        <a href="/inventory">📦 Inventário da loja</a>
+      <% } %>
+
+      <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
+        <a href="/users">👥 Gerenciar usuários</a>
+      <% } %>
+    </div>
+
+    <form action="/logout" method="POST" class="logout-form">
+      <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <% } %>
+      <button type="submit" class="btn-danger">Sair</button>
+    </form>
+  </main>
+
   <%- include('partials/footer') %>
 </body>
 </html>

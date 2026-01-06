@@ -1,0 +1,60 @@
+/* =========================
+   PERFIL
+========================= */
+
+.profile-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background: var(--bg-card);
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.profile-container h1 {
+  margin-bottom: 14px;
+}
+
+.profile-welcome {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: var(--text-muted);
+}
+
+/* LINKS DO PERFIL */
+.profile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.profile-links a {
+  background: #1f1f1f;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-light);
+  transition: background 0.2s;
+}
+
+.profile-links a:hover {
+  background: var(--secondary);
+}
+
+/* LOGOUT */
+.logout-form button {
+  width: 100%;
+}
+
+.btn-danger {
+  background: var(--danger);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
