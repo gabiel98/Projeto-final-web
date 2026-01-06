@@ -3,12 +3,13 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Adicionar Usuário</title>
+		<link rel="stylesheet" href="/css/formUsuario.css">
 	</head>
 	<body>
 		<%- include('partials/header') %>
 		<!-- Formulário para criar novo usuário -->
 		<h1>Adicionar Usuário</h1>
-		<form action="/users" method="POST">
+		<form class="form-addUser" action="/users" method="POST">
 			<% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
 				<input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 			<% } %>
@@ -58,10 +59,10 @@
 				<% } %>
 			<% } %>
 
-			<button type="submit">Adicionar Usuário</button>
+			<button class="btn-addUser" type="submit">Adicionar Usuário</button>
 		</form>
 
-		<p><a href="/users">Voltar para lista</a></p>
+		<p class="back-list"><a href="/users">Voltar para lista</a></p>
 	</body>
 	<%- include('partials/footer') %>
 </html>

@@ -1,0 +1,81 @@
+
+h1 {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+/* Formulário */
+.form-addUser {
+  max-width: 600px;
+  min-width: 520px;
+  max-height: 380px;
+  margin-bottom: 50px;
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  align-self: center;
+}
+
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+/* Botão */
+.btn-addUser {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #357abd;
+}
+
+/* Mensagens de erro */
+form p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Link de voltar */
+.back-list {
+  display: block;
+  text-align: center;
+  margin-bottom: 130px ;
+  text-decoration: none;
+  color: #4a90e2;
+  font-weight: bold;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
