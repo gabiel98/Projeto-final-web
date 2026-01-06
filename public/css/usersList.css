@@ -1,0 +1,65 @@
+/* =========================
+   GERENCIAR USUÁRIOS
+========================= */
+
+.users-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 16px;
+}
+
+.users-container h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.add-user-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+/* LISTA */
+.users-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* CARD DO USUÁRIO */
+.user-card {
+  background: var(--bg-card);
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+/* INFO */
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-cargo {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* AÇÕES */
+.user-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.btn-secondary:hover {
+  opacity: 0.9;
+}

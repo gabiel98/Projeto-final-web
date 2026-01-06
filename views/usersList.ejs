@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
-    <title>Lista de Usuários</title>
-    <style>
-        body { font-family: Arial, sans-serif; background:#f7f7f7; padding:20px }
-        li { background: #fff; margin-bottom:10px; padding:10px; border:1px solid #ddd }
-        .actions { margin-top:6px }
-        .actions form { display:inline }
-    </style>
+  <meta charset="utf-8" />
+  <title>Lista de Usuários</title>
+  <link rel="stylesheet" href="/css/usersList.css">
 </head>
 <body>
-    <%- include('partials/header') %>
-    <h1>Lista de Usuários</h1>
+  <%- include('partials/header') %>
+
+  <main class="users-container">
+    <h1>Gerenciar Usuários</h1>
+
     <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
-        <a href="/users/new">➕ Adicionar Novo Usuário</a>
+      <a href="/users/new" class="btn-primary add-user-btn">
+        ➕ Adicionar Novo Usuário
+      </a>
     <% } %>
-    <ul>
-        <% usuarios.forEach(function(user) { %>
-            <li>
-                <strong><%= user.nome %></strong> - <%= user.cargo %>
-                <div class="actions">
-                    <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
-                        <a href="/users/<%= user._id %>/edit"><button>✏️ Editar</button></a>
-                        <form action="/users/<%= user._id %>/delete" method="POST">
-                            <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                            <% } %>
-                            <button type="submit" style="color: red;">🗑️ Excluir</button>
-                        </form>
-                    <% } %>
-                </div>
-            </li>
-        <% }) %>
+
+    <ul class="users-list">
+      <% usuarios.forEach(function(user) { %>
+        <li class="user-card">
+          <div class="user-info">
+            <strong><%= user.nome %></strong>
+            <span class="user-cargo"><%= user.cargo || '—' %></span>
+          </div>
+
+          <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
+            <div class="user-actions">
+              <a href="/users/<%= user._id %>/edit">
+                <button class="btn-secondary">✏️ Editar</button>
+              </a>
+
+              <form action="/users/<%= user._id %>/delete" method="POST">
+                <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <% } %>
+                <button type="submit" class="btn-danger">🗑️ Excluir</button>
+              </form>
+            </div>
+          <% } %>
+        </li>
+      <% }) %>
     </ul>
-    <%- include('partials/footer') %>
+  </main>
+
+  <%- include('partials/footer') %>
 </body>
 </html>
