@@ -1,0 +1,85 @@
+/* =========================
+    carrinho
+========================= */
+
+.cart-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.cart-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.cart-empty {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Lista */
+.cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Item */
+.cart-item {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* Info do produto */
+.cart-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cart-price {
+  color: #e60023;
+  font-weight: bold;
+}
+
+/* Botão remover */
+.btn-remove {
+  background: #e60023;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-remove:hover {
+  background: #c2001d;
+}
+
+/* Botão continuar */
+.btn-continue {
+  display: block;
+  width: fit-content;
+  margin: 40px auto 0;
+  padding: 14px 36px;
+  background: #111;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-continue:hover {
+  background: #e60023;
+}

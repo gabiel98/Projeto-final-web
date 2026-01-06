@@ -3,28 +3,41 @@
 <head>
   <meta charset="utf-8" />
   <title>Carrinho</title>
+  <link rel="stylesheet" href="/css/cart.css">
 </head>
 <body>
+
   <%- include('partials/header') %>
-  <main>
-    <h1>Seu Carrinho</h1>
+
+  <main class="cart-container">
+    <h1 class="cart-title">Seu Carrinho</h1>
+
     <% if (!cart || cart.length === 0) { %>
-      <p>Seu carrinho está vazio.</p>
+      <p class="cart-empty">Seu carrinho está vazio.</p>
     <% } else { %>
-      <ul>
+
+      <ul class="cart-list">
         <% cart.forEach(function(item, idx) { %>
-          <li>
-            <strong><%= item.nome %></strong> - <%= item.preco %>
-            <form action="/cart/remove" method="POST" style="display:inline">
+          <li class="cart-item">
+            <div class="cart-info">
+              <strong><%= item.nome %></strong>
+              <span class="cart-price"><%= item.preco %></span>
+            </div>
+
+            <form action="/cart/remove" method="POST">
               <input type="hidden" name="index" value="<%= idx %>" />
-              <button type="submit">Remover</button>
+              <button type="submit" class="btn-remove">Remover</button>
             </form>
           </li>
         <% }) %>
       </ul>
+
     <% } %>
-    <p><a href="/">Continuar comprando</a></p>
+
+    <a href="/" class="btn-continue">Continuar comprando</a>
   </main>
+
   <%- include('partials/footer') %>
+
 </body>
 </html>
