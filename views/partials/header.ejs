@@ -1,28 +1,41 @@
-<header style="background:#222;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
-  <div style="display:flex;gap:12px;align-items:center;">
-    <a href="/" style="color:#fff;text-decoration:none;font-weight:bold;font-size:18px;">PokeShop</a>
+<head>
+    <link rel="stylesheet" href="/css/partials.css">
+</head>
+<header class="header">
+  <div class="nav-left">
+    <a href="/" class="logo">PokeShop</a>
+
     <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
-      <a href="/perfil" style="color:#fff;text-decoration:none;">Perfil</a>
+      <a href="/perfil">Perfil</a>
     <% } %>
-    <a href="/cart" style="color:#fff;text-decoration:none;">Carrinho</a>
+
+    <a href="/cart">Carrinho</a>
+
     <% if (typeof userRole !== 'undefined' && (userRole === 'dono' || userRole === 'funcionario')) { %>
-      <a href="/inventory" style="color:#fff;text-decoration:none;">Inventário da loja</a>
+      <a href="/inventory">Inventário da loja</a>
     <% } %>
+
     <% if (typeof userRole !== 'undefined' && userRole === 'dono') { %>
-      <a href="/users" style="color:#fff;text-decoration:none;">Gerenciar usuários</a>
+      <a href="/users">Gerenciar usuários</a>
     <% } %>
   </div>
-  <div>
+
+  <div class="nav-right">
     <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
-      <span style="margin-right:12px">Olá, <strong><%= userName %></strong><% if (typeof userCargo !== 'undefined' && userCargo) { %> (<%= userCargo %>)<% } %></span>
-      <form action="/logout" method="POST" style="display:inline;">
-        <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <span>Olá, <strong><%= userName %></strong>
+        <% if (typeof userCargo !== 'undefined' && userCargo) { %>
+          (<%= userCargo %>)
         <% } %>
-        <button type="submit">Sair</button>
+      </span>
+
+      <form action="/logout" method="POST">
+        <% if (typeof csrfToken !== 'undefined' && csrfToken) { %>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <% } %>
+        <button class="btn-sair" type="submit">Sair</button>
       </form>
     <% } else { %>
-      <a href="/login" style="color:#fff;text-decoration:none;background:#ff6b6b;padding:6px 10px;border-radius:4px;">Login</a>
+      <a href="/login" class="btn-login">Login</a>
     <% } %>
   </div>
 </header>
