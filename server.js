@@ -33,8 +33,9 @@ const { isAdmin, canManageProducts } = require('./middleware/roles');
 app.set('view engine', 'ejs'); // engine de templates
 app.set('views', './views'); // pasta das views
 
-// Servir arquivos estáticos (imagens de produtos)
+// Servir arquivos estáticos (imagens de produtos e CSS)
 app.use('/uploads', express.static('public/uploads'));
+app.use('/css', express.static('public/css'));
 
 // Middleware: interpreta bodies de formulários (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
