@@ -1,40 +1,50 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+
 exports.login = async (req, res) => {
   try {
+    console.log("REQ BODY LOGIN:", req.body);
+
     let { email, senha } = req.body;
-    // Normaliza email antes da busca
-    if (email) email = email.toLowerCase().trim();
-    // 1. Buscar usuário pelo email
+
+    if (!email || !senha) {
+      return res.status(400).json({ ok: false, erro: 'Dados incompletos' });
+    }
+
+    email = email.toLowerCase().trim();
+
     const user = await User.findOne({ email });
-    if (!user) return res.redirect('/login?erro=usuario');
 
-    // 2. Comparar senha com o Hash
+    if (!user) {
+      return res.status(401).json({ ok: false, erro: 'Email ou senha inválidos' });
+    }
+
     const isMatch = await bcrypt.compare(senha, user.password || '');
-    if (!isMatch) return res.redirect('/login?erro=senha');
 
-    // proteger contra session fixation e garantir persistência antes do redirect
+    if (!isMatch) {
+      return res.status(401).json({ ok: false, erro: 'Email ou senha inválidos' });
+    }
+
     req.session.regenerate(err => {
       if (err) {
         console.error('Erro ao regenerar sessão:', err);
-        return res.status(500).send('Erro de sessão');
+        return res.status(500).json({ erro: 'Erro de sessão' });
       }
 
       req.session.userId = user._id;
       req.session.userName = user.nome;
       req.session.userRole = user.role || 'comprador';
       req.session.userCargo = user.cargo || '';
-      req.session.nome = user.nome;
       req.session.serverStart = Date.now();
 
-      // log
-      console.log(`[${new Date().toISOString()}] Login bem-sucedido: email=${user.email} id=${user._id} ip=${req.ip}`);
+      console.log(`Login OK para ${user.email}`);
 
-      req.session.save(() => res.redirect('/perfil'));
+      req.session.save(() => res.json({ ok: true }));
     });
+
   } catch (err) {
     console.error('Erro em authController.login:', err);
-    return res.status(500).send('Erro no login');
+    return res.status(500).json({ erro: 'Erro no login' });
   }
 };
 
@@ -42,10 +52,10 @@ exports.logout = (req, res) => {
   req.session.destroy(err => {
     if (err) {
       console.error('Erro ao destruir sessão:', err);
-      return res.redirect('/perfil');
+      return res.status(500).json({ erro: 'Erro ao sair' });
     }
-    // Limpar cookie de sessão explicitamente no path raiz
+
     res.clearCookie('connect.sid', { path: '/' });
-    return res.redirect('/login');
+    res.json({ ok: true });
   });
 };
