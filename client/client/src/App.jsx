@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Componentes fixos
+import Header from "./components/header";
+import Footer from "./components/footer";
 
+// Páginas
+import Home from "./pages/home";
+import Login from "./pages/login";
+import Perfil from "./pages/perfil";
+import Cart from "./pages/Cart";
+import Inventory from "./pages/inventory";
+import ProductForm from "./pages/productForm";
+import UsersList from "./pages/usersList";
+import FormUsuario from "./pages/formUsuario";
+import EditUsuario from "./pages/editUsuario";
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
 
-export default App
+      <Routes>
+        {/* Público */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/users/new" element={<FormUsuario />} />
+
+        {/* Autenticados */}
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/cart" element={<Cart />} />
+
+        {/* Funcionario / Dono */}
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/products/new" element={<ProductForm />} />
+        <Route path="/products/:id/edit" element={<ProductForm />} />
+
+        {/* Dono */}
+        <Route path="/users" element={<UsersList />} />
+        <Route path="/users/:id/edit" element={<EditUsuario />} />
+      </Routes>
+
+    </BrowserRouter>
+  );
+}
