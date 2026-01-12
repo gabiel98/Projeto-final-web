@@ -84,7 +84,7 @@ function FormUsuario() {
         <h1 className="form-title">Adicionar Novo Usuário</h1>
 
         <form className="form-card" onSubmit={handleSubmit}>
-          {erro && <p className="error-msg">❌ {erro}</p>}
+          {erro && <p className="error-msg">{erro}</p>}
 
           <div className="form-group">
             <label>Nome do Usuário *</label>
@@ -157,7 +157,7 @@ function FormUsuario() {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary">
-              ➕ Adicionar Usuário
+              Adicionar Usuário
             </button>
             <button 
               type="button" 

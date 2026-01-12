@@ -51,7 +51,7 @@ export default function UsersList() {
             className="btn-primary add-user-btn"
             onClick={() => navigate('/users/new')}
           >
-            ➕ Adicionar Novo Usuário
+            Adicionar Novo Usuário
           </button>
         )}
 
@@ -71,14 +71,14 @@ export default function UsersList() {
                     className="btn-secondary"
                     onClick={() => navigate(`/users/${user._id}/edit`)}
                   >
-                    ✏️ Editar
+                    Editar
                   </button>
 
                   <button
                     className="btn-danger"
                     onClick={() => handleDelete(user._id)}
                   >
-                    🗑️ Excluir
+                    Excluir
                   </button>
                 </div>
               )}

@@ -115,7 +115,7 @@ function Home() {
                     className="btn-primary"
                     onClick={() => handleAddToCart(p._id)}
                   >
-                    🛒 Adicionar
+                    Adicionar
                   </button>
                 )}
 
@@ -125,14 +125,14 @@ function Home() {
                       to={`/products/${p._id}/edit`}
                       className="btn-secondary"
                     >
-                      ✏️ Editar
+                      Editar
                     </Link>
 
                     <button
                       className="btn-danger"
                       onClick={() => handleDeleteProduct(p._id)}
                     >
-                      🗑️ Excluir
+                      Excluir
                     </button>
                   </>
                 )}
@@ -145,7 +145,7 @@ function Home() {
         {(userRole === 'dono' || userRole === 'funcionario') && (
           <div className="add-product">
             <Link to="/products/new" className="btn-add">
-              ➕ Adicionar novo produto
+              Adicionar novo produto
             </Link>
           </div>
         )}

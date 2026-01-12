@@ -40,7 +40,7 @@ function Inventory() {
         <p>Aqui você pode cadastrar, editar e excluir itens.</p>
 
         <p>
-          <Link to="/products/new">➕ Cadastrar novo produto</Link>
+          <Link to="/products/new">Cadastrar novo produto</Link>
         </p>
 
         {(!produtos || produtos.length === 0) ? (
@@ -76,14 +76,14 @@ function Inventory() {
 
                 <div style={{ marginTop: '6px' }}>
                   <Link to={`/products/${p._id}/edit`}>
-                    <button>✏️ Editar</button>
+                    <button>Editar</button>
                   </Link>
 
                   <button
                     onClick={() => handleDelete(p._id)}
                     style={{ color: 'red', marginLeft: '6px' }}
                   >
-                    🗑️ Excluir
+                    Excluir
                   </button>
                 </div>
               </li>

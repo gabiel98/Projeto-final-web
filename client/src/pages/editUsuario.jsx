@@ -143,7 +143,7 @@ function EditUsuario() {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary">
-              💾 Salvar Alterações
+              Salvar Alterações
             </button>
 
             <button

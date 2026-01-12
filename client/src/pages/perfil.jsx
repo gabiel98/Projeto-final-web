@@ -50,15 +50,15 @@ function Perfil() {
         </p>
 
         <div className="profile-links">
-          <Link to="/cart">🛒 Meu carrinho</Link>
-          <Link to="/">🏬 Voltar à loja</Link>
+          <Link to="/cart">Meu carrinho</Link>
+          <Link to="/">Voltar à loja</Link>
 
           {(userRole === 'dono' || userRole === 'funcionario') && (
-            <Link to="/inventory">📦 Inventário da loja</Link>
+            <Link to="/inventory">Inventário da loja</Link>
           )}
 
           {userRole === 'dono' && (
-            <Link to="/users">👥 Gerenciar usuários</Link>
+            <Link to="/users">Gerenciar usuários</Link>
           )}
         </div>
 

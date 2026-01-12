@@ -2,21 +2,37 @@
 
 Este é um projeto demonstrativo em Node.js usando Express, React.js e MongoDB (Mongoose). O objetivo é um CRUD de usuários e produtos com cadastro, login, sessão e proteção de rotas.
 
-**Tecnologias**
+## Tecnologias Obrigatórias
 - **Node.js / Express**: servidor backend e API REST
 - **React.js + Vite**: frontend SPA (Single Page Application)
 - **MongoDB / Mongoose**: persistência de dados
-- **express-session**: sessões (login)
+- **express-session + connect-mongo**: gerenciamento de sessões persistentes
 - **bcryptjs**: hashing de senhas
+- **helmet**: segurança de HTTP headers
+- **csurf**: proteção contra CSRF
+- **express-rate-limit**: limitação de requisições (força bruta)
+- **multer**: upload de arquivos (imagens de produtos)
 
 **Estrutura principal**
 - `server.js` - ponto de entrada do backend, configurações de sessão e rotas API
 - `models/` - esquemas Mongoose (User, Product)
 - `controllers/` - lógica da aplicação (`userController.js`, `authController.js`, `productController.js`)
 - `middleware/` - middlewares de autenticação e autorização
+- `public/uploads/` - armazenamento de imagens de produtos
 - `client/` - aplicação React.js com Vite
   - `client/src/` - componentes React e lógica do frontend
+  - `client/src/pages/` - páginas React (home, login, perfil, produtos, usuários)
+  - `client/src/components/` - componentes reutilizáveis (Header, Footer)
+  - `client/src/services/` - API service para comunicação com backend
+  - `client/src/styles/` - arquivos CSS
   - `client/dist/` - build de produção (gerado após `npm run build`)
+
+## Sistema de Permissões
+O projeto implementa três níveis de acesso:
+- **Comprador** (`comprador`): usuário padrão, pode visualizar produtos e adicionar ao carrinho
+- **Funcionário** (`funcionario`): pode gerenciar produtos (CRUD completo)
+  - Cargos permitidos: Gerente, Repositor, Atendente
+- **Dono** (`dono`): acesso total, pode gerenciar usuários e produtos
 
 ## Pré-requisitos
 - Node.js (recomenda-se v16+)
@@ -96,25 +112,64 @@ Se você quiser desenvolver o frontend React com hot-reload, você pode rodar o 
 1. Em um terminal, rode o backend:
 ```powershell
 node server.js
-```
+## Rotas principais da API
 
-2. Em outro terminal, entre na pasta `client` e rode o dev server do Vite:
-```powershell
-cd client
-npm run dev
-```
+### Autenticação
+- `POST /api/login` - autenticação (cria sessão)
+- `POST /api/logout` - finaliza sessão
+- `GET /api/me` - retorna dados do usuário autenticado
 
-O Vite abrirá em `http://localhost:5173` (ou outra porta). Configure proxy no `vite.config.js` para fazer requisições à API em `http://localhost:3030`.
+### Usuários (protegidas, apenas para dono)
+- `GET /api/users` - lista todos os usuários
+- `GET /api/users/cargos` - retorna lista de cargos permitidos
+- `GET /api/users/:id` - retorna dados de um usuário
+- `POST /api/users` - cria novo usuário
+- `PUT /api/users/:id` - atualiza usuário
+- `DELETE /api/users/:id` - exclui usuário
 
-**Lembre-se**: Após fazer alterações no React, sempre rode `npm run build` dentro de `client/` antes de commitar ou fazer deploy, para que o servidor Express sirva a versão atualizada.
+### Produtos
+- `GET /api/products` - lista todos os produtos
+- `GET /api/products/tipos` - retorna tipos de produtos disponíveis
+- `GET /api/products/:id` - retorna dados de um produto
+- `POST /api/products` - cria novo produto (com upload de imagem)
+- `PUT /api/products/:id` - atualiza produto (com upload opcional de imagem)
+- `DELETE /api/products/:id` - exclui produto e sua imagem
 
-## Rotas principais
-- `GET /` - rota inicial (pode redirecionar para `/login` ou `/users`)
+### Frontend (React SPA)
+- `GET /` - aplicação React (todas as rotas são gerenciadas pelo React Router)
+- Rotas do React: `/`, `/login`, `/perfil`, `/users`, `/users/new`, `/users/:id/edit`, `/inventory`, `/products/new`, `/products/:id/edit`, `/cart`
 - `GET /login` - formulário de login
-- `POST /login` - autenticação (cria sessão)
-- `POST /logout` - finaliza sessão
-- `GET /users` - lista de usuários (protegida por sessão)
-- `GET /users/new` - formulário de cadastro
+## Autenticação e Sessões
+- Ao criar um usuário, a senha é armazenada como hash usando `bcryptjs`.
+- O login compara a senha enviada com o hash e, se válido, cria sessão com `userId`, `userName`, `userRole` e `userCargo`.
+- As sessões são persistidas no MongoDB usando `connect-mongo`, com TTL de 30 dias.
+- O servidor invalida automaticamente sessões antigas ao reiniciar (via `serverStartTime`).
+- O middleware `isAuth` (em `middleware/auth.js`) protege rotas que exigem autenticação.
+- O middleware `isAdmin` protege rotas que exigem permissão de dono.
+
+## Funcionalidades Implementadas
+
+### Gerenciamento de Produtos
+- CRUD completo de produtos (criar, ler, atualizar, deletar)
+- Upload de imagens com multer (limite de 5MB, apenas imagens)
+- Exclusão automática de imagens antigas ao atualizar ou remover produto
+- Campos: título, descrição, preço, estoque, tipo, imagem
+- Tipos de produtos: Carta, Acessório, Brinquedo, Roupas, Outro
+
+### Gerenciamento de Usuários
+- CRUD completo de usuários (apenas para dono)
+- Sistema de roles: comprador, funcionario, dono
+- Validação de cargos para funcionários (Gerente, Repositor, Atendente)
+- Hash de senhas com bcryptjs
+- Normalização de email (lowercase e trim)
+
+### Segurança
+- Rate limiting no login (5 tentativas por minuto)
+- Proteção CSRF em rotas POST (exceto APIs)
+- Helmet para hardening de headers HTTP
+- Cookies seguros (httpOnly, sameSite)
+- Validação de ObjectId do MongoDB
+- Sessões persistentes com regeneração no login
 - `POST /users` - cria novo usuário (hash de senha)
 - `GET /users/:id/edit` - formulário de edição (protegida)
 - `POST /users/:id/update` - atualiza usuário (protegida)
@@ -162,11 +217,39 @@ npm install express-rate-limit
 
 - Configuração sugerida (já aplicada em `server.js`): janela de 1 minuto e máximo de 5 tentativas — a 6ª tentativa no mesmo minuto recebe HTTP `429` com a mensagem: `Muitas tentativas de login. Tente novamente em 1 minuto.`
 
-Como testar (PowerShell):
+## Testes manuais recomendados
+1. **Registro e Login**
+   - Criar um usuário em `/users/new` (via dono)
+   - Fazer login em `/login`
+   - Verificar redirecionamento e dados da sessão
 
-```powershell
-# Exemplo usando Invoke-WebRequest em PowerShell (substitua email e senha conforme necessário):
-for ($i=0; $i -lt 6; $i++) { Invoke-WebRequest -Uri 'http://localhost:3030/login' -Method POST -Body @{ email='invalido@example.com'; senha='senhaerrada' } -UseBasicParsing -ErrorAction SilentlyContinue; Write-Host "Tentativa $($i+1) enviada" }
+2. **Produtos**
+   - Criar produto em `/products/new` com imagem
+   - Editar produto e trocar imagem (verificar exclusão da antiga)
+   - Excluir produto (verificar exclusão da imagem)
+   - Verificar listagem na home (`/`)
+
+3. **Usuários (como dono)**
+   - Acessar `/users` e visualizar lista
+   - Criar novo usuário com role funcionario
+   - Editar usuário existente
+   - Excluir usuário
+
+4. **Permissões**
+   - Login como comprador: verificar que não vê opções de gerenciamento
+   - Login como funcionario: verificar acesso ao inventário, mas não a usuários
+   - Login como dono: verificar acesso total
+
+5. **Segurança**
+   - Testar rate limiting (6 tentativas de login em 1 minuto)
+   - Verificar proteção CSRF (tentar POST sem token)
+   - Verificar logout e invalidação de sessão
+
+## Credenciais Padrão
+Após popular o banco, use estas credenciais para testar:
+- **Email**: admin@pokeshop.com
+- **Senha**: admin123
+- **Role**: dono (acesso total)alhost:3030/login' -Method POST -Body @{ email='invalido@example.com'; senha='senhaerrada' } -UseBasicParsing -ErrorAction SilentlyContinue; Write-Host "Tentativa $($i+1) enviada" }
 ```
 
 Ou com `curl` (Linux/macOS / Windows com curl instalado):
