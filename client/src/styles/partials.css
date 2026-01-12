@@ -28,6 +28,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-bottom: 60px;
 }
 
 /* MAIN */
@@ -146,6 +147,9 @@ footer {
   text-align: center;
   border-top: 1px solid #333;
   font-size: 13px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 footer a {
