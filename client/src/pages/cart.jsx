@@ -5,6 +5,7 @@ import '../styles/cart.css'
 
 function Cart() {
   const [cart, setCart] = useState([])
+  const [notification, setNotification] = useState(null)
 
   // Buscar carrinho inicial
   useEffect(() => {
@@ -15,6 +16,11 @@ function Cart() {
       .then(data => setCart(data))
       .catch(err => console.error(err))
   }, [])
+
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type })
+    setTimeout(() => setNotification(null), 3000)
+  }
 
   // Remover item
   function handleRemove(index) {
@@ -32,6 +38,30 @@ function Cart() {
         setCart(prev => prev.filter((_, i) => i !== index))
       })
       .catch(console.error)
+  }
+
+  // Processar compra
+  function handleCheckout() {
+    fetch('http://localhost:3030/api/cart/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          showNotification('Compra realizada com sucesso!', 'success')
+          setCart([])
+        } else {
+          showNotification(data.erro || 'Erro ao processar compra', 'error')
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        showNotification('Erro ao processar compra', 'error')
+      })
   }
 
   return (
@@ -73,9 +103,22 @@ function Cart() {
           </ul>
         )}
 
-        <a href="/" className="btn-continue">
-          Continuar comprando
-        </a>
+        <div className="cart-actions">
+          {cart && cart.length > 0 && (
+            <button className="btn-checkout" onClick={handleCheckout}>
+              Finalizar Compra
+            </button>
+          )}
+          <a href="/" className="btn-continue">
+            Continuar comprando
+          </a>
+        </div>
+
+        {notification && (
+          <div className={`notification notification-${notification.type}`}>
+            {notification.message}
+          </div>
+        )}
       </main>
 
       <Footer />

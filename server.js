@@ -187,6 +187,7 @@ const cartController = require('./controllers/cartController');
 app.get('/api/cart', cartController.view);
 app.post('/api/cart/add', cartController.add);
 app.post('/api/cart/remove', cartController.remove);
+app.post('/api/cart/checkout', cartController.checkout);
 
 // --- Servir React App (SPA) ---
 // Serve arquivos estáticos do build do React (CSS, JS, imagens)

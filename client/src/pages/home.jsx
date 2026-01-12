@@ -8,6 +8,7 @@ function Home() {
   const [produtos, setProdutos] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userRole, setUserRole] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     // Buscar produtos
@@ -30,6 +31,11 @@ function Home() {
       .catch(() => setIsAuthenticated(false))
   }, [])
 
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type })
+    setTimeout(() => setNotification(null), 3000)
+  }
+
   function handleAddToCart(productId) {
     fetch('/api/cart/add', {
       method: 'POST',
@@ -39,6 +45,16 @@ function Home() {
       body: JSON.stringify({ productId }),
       credentials: 'include'
     })
+      .then(res => {
+        if (res.ok) {
+          showNotification('Produto adicionado ao carrinho com sucesso!', 'success')
+        } else {
+          showNotification('Erro ao adicionar produto ao carrinho', 'error')
+        }
+      })
+      .catch(() => {
+        showNotification('Erro ao adicionar produto ao carrinho', 'error')
+      })
   }
 
   function handleDeleteProduct(productId) {
@@ -123,6 +139,12 @@ function Home() {
             <Link to="/products/new" className="btn-add">
               Adicionar novo produto
             </Link>
+          </div>
+        )}
+
+        {notification && (
+          <div className={`notification notification-${notification.type}`}>
+            {notification.message}
           </div>
         )}
 
