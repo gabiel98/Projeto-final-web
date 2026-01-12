@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 exports.login = async (req, res) => {
   try {
-    console.log("REQ BODY LOGIN:", req.body);
+    console.log("LOGIN TENTATIVA - Email:", req.body.email);
 
     let { email, senha } = req.body;
 
