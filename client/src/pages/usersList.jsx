@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/header'
+import Footer from '../components/footer'
 import api from '../services/api'
+import '../styles/usersList.css'
 
 export default function UsersList() {
   const [usuarios, setUsuarios] = useState([])
@@ -37,48 +40,54 @@ export default function UsersList() {
   }
 
   return (
-    <main className="users-container">
-      <h1>Gerenciar Usuários</h1>
+    <>
+      <Header />
 
-      {isDono && (
-        <button
-          className="btn-primary add-user-btn"
-          onClick={() => navigate('/users/new')}
-        >
-          ➕ Adicionar Novo Usuário
-        </button>
-      )}
+      <main className="users-container">
+        <h1>Gerenciar Usuários</h1>
 
-      <ul className="users-list">
-        {usuarios.map(user => (
-          <li key={user._id} className="user-card">
-            <div className="user-info">
-              <strong>{user.nome}</strong>
-              <span className="user-cargo">
-                {user.cargo || '—'}
-              </span>
-            </div>
+        {isDono && (
+          <button
+            className="btn-primary add-user-btn"
+            onClick={() => navigate('/users/new')}
+          >
+            ➕ Adicionar Novo Usuário
+          </button>
+        )}
 
-            {isDono && (
-              <div className="user-actions">
-                <button
-                  className="btn-secondary"
-                  onClick={() => navigate(`/users/${user._id}/edit`)}
-                >
-                  ✏️ Editar
-                </button>
-
-                <button
-                  className="btn-danger"
-                  onClick={() => handleDelete(user._id)}
-                >
-                  🗑️ Excluir
-                </button>
+        <ul className="users-list">
+          {usuarios.map(user => (
+            <li key={user._id} className="user-card">
+              <div className="user-info">
+                <strong>{user.nome}</strong>
+                <span className="user-cargo">
+                  {user.cargo || '—'}
+                </span>
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
-    </main>
+
+              {isDono && (
+                <div className="user-actions">
+                  <button
+                    className="btn-secondary"
+                    onClick={() => navigate(`/users/${user._id}/edit`)}
+                  >
+                    ✏️ Editar
+                  </button>
+
+                  <button
+                    className="btn-danger"
+                    onClick={() => handleDelete(user._id)}
+                  >
+                    🗑️ Excluir
+                  </button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </main>
+
+      <Footer />
+    </>
   )
 }

@@ -21,16 +21,16 @@ export default function ProductForm() {
 
   // 🔹 carregar lista de tipos
   useEffect(() => {
-    api.get('/api/products/tipos', { withCredentials: true })
-      .then(res => setTipos(res.data))
+    api.get('/api/products/tipos')
+      .then(res => setTipos(res))
       .catch(() => alert('Erro ao carregar tipos'))
   }, [])
 
   // 🔹 carregar produto para edição
   useEffect(() => {
     if (id) {
-      api.get(`/api/products/${id}`, { withCredentials: true })
-        .then(res => setProduto(res.data))
+      api.get(`/api/products/${id}`)
+        .then(res => setProduto(res))
         .catch(() => alert('Erro ao carregar produto'))
     }
   }, [id])
@@ -47,18 +47,14 @@ export default function ProductForm() {
 
     try {
       if (id) {
-        await api.put(`/api/products/${id}`, formData, {
-          withCredentials: true
-        })
+        await api.put(`/api/products/${id}`, formData)
       } else {
-        await api.post('/api/products', formData, {
-          withCredentials: true
-        })
+        await api.post('/api/products', formData)
       }
 
       navigate('/inventory')
     } catch (err) {
-      alert(err.response?.data?.erro || 'Erro ao salvar produto')
+      alert(err.erro || 'Erro ao salvar produto')
     }
   }
 

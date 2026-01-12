@@ -40,6 +40,8 @@ app.use('/css', express.static('public/css'));
 
 // Middleware: interpreta bodies de formulários (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
+// Middleware: interpreta bodies JSON (para APIs REST)
+app.use(express.json());
 
 // --- Sessão ---
 // Marca de inicialização do servidor para invalidar sessões antigas
@@ -84,13 +86,7 @@ app.use((req, res, next) => {
 // Produtos: delegar para controller que usa o DB
 const productController = require('./controllers/productController');
 
-// Rotas de autenticação
-app.get('/login', (req, res) => {
-    // Passamos query para exibir erros como ?erro=senha_incorreta
-    res.render('login', { query: req.query });
-});
 // Limite de tentativas de login: 5 tentativas por 1 minuto.
-// A 6ª tentativa dentro do mesmo minuto será bloqueada com 429.
 const loginLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minuto
     max: 5, // número máximo de tentativas permitidas
@@ -99,8 +95,32 @@ const loginLimiter = rateLimit({
     legacyHeaders: false,
     handler: (req, res) => {
         console.warn(`[${new Date().toISOString()}] Bloqueio de login por excesso de tentativas (IP=${req.ip})`);
-        return res.status(429).send('Muitas tentativas de login. Tente novamente em 1 minuto.');
+        return res.status(429).json({ erro: 'Muitas tentativas de login. Tente novamente em 1 minuto.' });
     }
+});
+
+// --- API REST para autenticação ---
+app.post('/api/login', loginLimiter, authController.login);
+app.post('/api/logout', authController.logout);
+app.get('/api/me', (req, res) => {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ erro: 'Não autenticado' });
+    }
+    res.json({
+        userId: req.session.userId,
+        userName: req.session.userName,
+        nome: req.session.userName,  // alias para compatibilidade
+        userRole: req.session.userRole,
+        role: req.session.userRole,   // alias para compatibilidade
+        userCargo: req.session.userCargo,
+        cargo: req.session.userCargo  // alias para compatibilidade
+    });
+});
+
+// Rotas antigas EJS (podem ser removidas se não usadas mais)
+app.get('/login', (req, res) => {
+    // Passamos query para exibir erros como ?erro=senha_incorreta
+    res.render('login', { query: req.query });
 });
 
 // CSRF protection: usamos tokens para rotas POST, exceto /login e rotas com upload
@@ -110,8 +130,10 @@ const csrfProtection = csurf();
 function csrfUnlessExcluded(req, res, next) {
     // Se sessão foi invalidada, não aplicar CSRF (usuário será redirecionado para login)
     if (req.sessionInvalidated) return next();
-    // Excluir: POST /login e rotas de produtos com upload (multipart/form-data)
+    // Excluir: POST /api/login, rotas de API e rotas de produtos com upload (multipart/form-data)
+    if (req.path === '/api/login' && req.method === 'POST') return next();
     if (req.path === '/login' && req.method === 'POST') return next();
+    if (req.path.startsWith('/api/')) return next(); // Todas as rotas de API sem CSRF
     if (req.path === '/products' && req.method === 'POST') return next();
     if (req.path.match(/^\/products\/[^\/]+\/update$/) && req.method === 'POST') return next();
     return csrfProtection(req, res, next);
@@ -152,12 +174,10 @@ if (process.env.DEBUG_SESS === '1') {
     });
 }
 
-app.post('/login', loginLimiter, authController.login);
-app.post('/logout', authController.logout);
-
 // --- API REST para usuários ---
 app.get('/api/users', isAdmin, userController.getAllUsers);
 app.get('/api/users/cargos', isAdmin, userController.getCargos);
+app.get('/api/users/:id', isAdmin, userController.getById);
 app.post('/api/users', userController.createNewUser);
 app.put('/api/users/:id', isAdmin, userController.updateUser);
 app.delete('/api/users/:id', isAdmin, userController.deleteUser);
