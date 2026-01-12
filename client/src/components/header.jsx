@@ -53,6 +53,7 @@ export default function Header() {
       <div className="nav-left">
         <Link to="/" className="logo">
           <img src="/logo/logo.png" alt="PokeShop Logo" className="logo-img" />
+          <span className="pokeshop-font">PokeShop</span>
         </Link>
 
         {auth.isAuthenticated && (
