@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
   imagem: { type: String }, // caminho ou URL da imagem
   tipo: { 
     type: String, 
-    enum: ['Pokémon', 'Poké Ball', 'Medicamento', 'Berry', 'TM/HM', 'Item de Batalha', 'Outro'],
+    enum: ['Action Figure', 'Boneco', 'Pelúcia', 'Jogo Digital', 'Jogo Físico', 'Cartas', 'Acessórios', 'Roupas', 'Outro'],
     default: 'Outro'
   },
   criadoEm: { type: Date, default: Date.now }

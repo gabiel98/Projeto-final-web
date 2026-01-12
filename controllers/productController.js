@@ -39,8 +39,8 @@ const upload = multer({
 });
 
 const tiposProduto = [
-  'Pokémon', 'Poké Ball', 'Medicamento', 'Berry',
-  'TM/HM', 'Item de Batalha', 'Outro'
+  'Action Figure', 'Boneco', 'Pelúcia', 'Jogo Digital', 
+  'Jogo Físico', 'Cartas', 'Acessórios', 'Roupas', 'Outro'
 ];
 
 const productController = {
