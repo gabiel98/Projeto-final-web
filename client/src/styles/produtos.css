@@ -1,6 +1,14 @@
 /* =========================
    PRODUTOS
 ========================= */
+
+@font-face {
+  font-family: 'Pokemon Solid';
+  src: url('../assets/fonts/Pokemon Solid.ttf') format('truetype');
+  font-weight:900;
+  font-style: normal;
+}
+
 .products-container {
   max-width: 1600px;
   margin: 60px auto;
@@ -8,10 +16,16 @@
 }
 
 .products-title {
-  color: #ff5252;
+  color:#ff0505;
   font-size: 30px;
   margin-bottom: 30px;
   text-align: center;
+}
+
+.pokeshop-font {
+  color:#FFCB05;
+  font-family: "Pokemon Solid",sans-serif;
+  text-shadow: 4px 2px 0 #2A75BB;
 }
 
 /* Grid */

@@ -74,7 +74,7 @@ function Home() {
       <Header />
 
       <main className="products-container">
-        <h1 className="products-title">PokeShop - Itens Pokémon</h1>
+        <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Itens Pokémon</h1>
 
         <section className="products-grid">
           {produtos.map(p => (
