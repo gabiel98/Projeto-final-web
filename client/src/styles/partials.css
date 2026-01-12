@@ -60,6 +60,14 @@ header {
   font-weight: bold;
   color: var(--primary);
   margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-right {
