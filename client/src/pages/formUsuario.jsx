@@ -80,85 +80,95 @@ function FormUsuario() {
     <>
       <Header />
 
-      <h1>Adicionar Usuário</h1>
+      <main className="form-container">
+        <h1 className="form-title">Adicionar Novo Usuário</h1>
 
-      <form className="form-addUser" onSubmit={handleSubmit}>
-        <div>
-          <label>Nome do Usuário:</label>
-          <input
-            type="text"
-            name="nome_usuario"
-            value={form.nome_usuario}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form className="form-card" onSubmit={handleSubmit}>
+          {erro && <p className="error-msg">❌ {erro}</p>}
 
-        <div>
-          <label>Email (obrigatório):</label>
-          <input
-            type="email"
-            name="email_usuario"
-            value={form.email_usuario}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label>Nome do Usuário *</label>
+            <input
+              type="text"
+              name="nome_usuario"
+              value={form.nome_usuario}
+              onChange={handleChange}
+              placeholder="Digite o nome completo"
+              required
+            />
+          </div>
 
-        <div>
-          <label>Senha (obrigatório):</label>
-          <input
-            type="password"
-            name="senha_usuario"
-            value={form.senha_usuario}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label>Email *</label>
+            <input
+              type="email"
+              name="email_usuario"
+              value={form.email_usuario}
+              onChange={handleChange}
+              placeholder="Digite o email"
+              required
+            />
+          </div>
 
-        {userRole === 'dono' && (
-          <>
-            <div>
-              <label>Cargo (funcionário somente):</label>
-              <select
-                name="cargo_usuario"
-                value={form.cargo_usuario}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Selecione o cargo
-                </option>
-                {cargosPermitidos.map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-            </div>
+          <div className="form-group">
+            <label>Senha *</label>
+            <input
+              type="password"
+              name="senha_usuario"
+              value={form.senha_usuario}
+              onChange={handleChange}
+              placeholder="Digite uma senha segura"
+              required
+            />
+          </div>
 
-            <div>
-              <label>Permissão:</label>
-              <select
-                name="role"
-                value={form.role}
-                onChange={handleChange}
-              >
-                <option value="comprador">Comprador</option>
-                <option value="funcionario">Funcionário</option>
-                <option value="dono">Dono</option>
-              </select>
-            </div>
-          </>
-        )}
+          {userRole === 'dono' && (
+            <>
+              <div className="form-group">
+                <label>Permissão (Role)</label>
+                <select
+                  name="role"
+                  value={form.role}
+                  onChange={handleChange}
+                >
+                  <option value="comprador">Comprador</option>
+                  <option value="funcionario">Funcionário</option>
+                  <option value="dono">Dono</option>
+                </select>
+              </div>
 
-        {erro && <p style={{ color: 'red' }}>{erro}</p>}
+              {form.role === 'funcionario' && (
+                <div className="form-group">
+                  <label>Cargo (para funcionários)</label>
+                  <select
+                    name="cargo_usuario"
+                    value={form.cargo_usuario}
+                    onChange={handleChange}
+                  >
+                    <option value="">Selecione o cargo</option>
+                    {cargosPermitidos.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
+          )}
 
-        <button className="btn-addUser" type="submit">Adicionar Usuário</button>
-      </form>
-
-      <p className="back-list">
-        <button onClick={() => navigate('/users')}>
-          Voltar para lista
-        </button>
-      </p>
+          <div className="form-actions">
+            <button type="submit" className="btn-primary">
+              ➕ Adicionar Usuário
+            </button>
+            <button 
+              type="button" 
+              className="btn-secondary"
+              onClick={() => navigate('/users')}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </main>
 
       <Footer />
     </>
