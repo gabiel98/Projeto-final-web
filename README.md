@@ -1,20 +1,22 @@
 # Projeto Final (Loja Pokemon)
 
-Este é um projeto demonstrativo em Node.js usando Express, EJS e MongoDB (Mongoose). O objetivo é um CRUD de usuários com cadastro, login, sessão e proteção de rotas.
+Este é um projeto demonstrativo em Node.js usando Express, React.js e MongoDB (Mongoose). O objetivo é um CRUD de usuários e produtos com cadastro, login, sessão e proteção de rotas.
 
 **Tecnologias**
-- **Node.js / Express**: servidor e roteamento
-- **EJS**: view engine (templates)
+- **Node.js / Express**: servidor backend e API REST
+- **React.js + Vite**: frontend SPA (Single Page Application)
 - **MongoDB / Mongoose**: persistência de dados
 - **express-session**: sessões (login)
 - **bcryptjs**: hashing de senhas
 
 **Estrutura principal**
-- `server.js` - ponto de entrada, configurações de sessão e rotas
-- `models/User.js` - esquema Mongoose do usuário
-- `controllers/` - lógica da aplicação (`userController.js`, `authController.js`)
-- `middleware/auth.js` - middleware `isAuth` para proteger rotas
-- `views/` - templates EJS (`formUsuario.ejs`, `usersList.ejs`, `login.ejs`, `perfil.ejs`, `editUsuario.ejs`)
+- `server.js` - ponto de entrada do backend, configurações de sessão e rotas API
+- `models/` - esquemas Mongoose (User, Product)
+- `controllers/` - lógica da aplicação (`userController.js`, `authController.js`, `productController.js`)
+- `middleware/` - middlewares de autenticação e autorização
+- `client/` - aplicação React.js com Vite
+  - `client/src/` - componentes React e lógica do frontend
+  - `client/dist/` - build de produção (gerado após `npm run build`)
 
 ## Pré-requisitos
 - Node.js (recomenda-se v16+)
@@ -26,18 +28,42 @@ Recomendações de segurança (instalações adicionais):
 - `dotenv` — para carregar variáveis de ambiente (se ainda não estiver instalado)
 
 ## Instalação
-1. Abra um terminal na pasta do projeto (`projeto-mvc`).
-2. Instale dependências:
+
+### 1. Instalar dependências do Backend
+Abra um terminal na pasta raiz do projeto e instale as dependências do servidor:
 
 ```powershell
 npm install
 ```
 
-3. Configure o arquivo de ambiente `.env` na raiz com as variáveis necessárias. Exemplo:
+### 2. Instalar dependências do Frontend (React)
+Navegue até a pasta `client` e instale as dependências do React:
+
+```powershell
+cd client
+npm install
+```
+
+### 3. Fazer o build do React
+**IMPORTANTE**: Antes de iniciar o servidor backend, você precisa gerar o build de produção do React. Ainda dentro da pasta `client`, execute:
+
+```powershell
+npm run build
+```
+
+Este comando criará a pasta `client/dist/` com os arquivos otimizados do React. O servidor Express irá servir esses arquivos estáticos.
+
+### 4. Voltar para a pasta raiz
+```powershell
+cd ..
+```
+
+### 5. Configurar variáveis de ambiente
+Configure o arquivo `.env` na raiz do projeto com as variáveis necessárias. Exemplo:
 
 ```
-MONGODB_URI=mongodb://localhost:27017/projeto_mvc
-PORT=3000
+MONGODB_URI=mongodb://localhost:27017/pokemon-data-base
+PORT=3030
 SESSION_SECRET=sua_senha_aqui
 
 ```
@@ -46,7 +72,7 @@ Observação: Se for usar MongoDB Atlas, substitua `MONGODB_URI` pela sua string
 
 ## Como rodar
 
-1. Certifique-se que o MongoDB está ativo (se local):
+### 1. Certifique-se que o MongoDB está ativo (se local):
 
 ```powershell
 # Em uma instalação padrão do MongoDB no Windows, iniciar o serviço (PowerShell como administrador):
@@ -55,13 +81,32 @@ net start MongoDB
 mongod --dbpath "C:\caminho\para\dados"
 ```
 
-2. Execute o servidor Node:
+### 2. Execute o servidor Node:
 
 ```powershell
 node server.js
 ```
 
-O servidor iniciará na porta definida em `PORT` (padrão no `.env` é `3000`). Acesse `http://localhost:3000`.
+O servidor iniciará na porta definida em `PORT` (padrão no `.env` é `3030`). Acesse `http://localhost:3030`.
+
+## Desenvolvimento React (modo dev)
+
+Se você quiser desenvolver o frontend React com hot-reload, você pode rodar o servidor de desenvolvimento do Vite em paralelo:
+
+1. Em um terminal, rode o backend:
+```powershell
+node server.js
+```
+
+2. Em outro terminal, entre na pasta `client` e rode o dev server do Vite:
+```powershell
+cd client
+npm run dev
+```
+
+O Vite abrirá em `http://localhost:5173` (ou outra porta). Configure proxy no `vite.config.js` para fazer requisições à API em `http://localhost:3030`.
+
+**Lembre-se**: Após fazer alterações no React, sempre rode `npm run build` dentro de `client/` antes de commitar ou fazer deploy, para que o servidor Express sirva a versão atualizada.
 
 ## Rotas principais
 - `GET /` - rota inicial (pode redirecionar para `/login` ou `/users`)
