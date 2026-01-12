@@ -36,7 +36,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* Imagem do produto no carrinho */
+.cart-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 /* Info do produto */
@@ -44,6 +54,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 
 .cart-price {

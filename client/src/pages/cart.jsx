@@ -47,6 +47,14 @@ function Cart() {
           <ul className="cart-list">
             {cart.map((item, idx) => (
               <li className="cart-item" key={idx}>
+                {item.imagem && (
+                  <img 
+                    src={item.imagem} 
+                    alt={item.nome}
+                    className="cart-image"
+                  />
+                )}
+                
                 <div className="cart-info">
                   <strong>{item.nome}</strong>
                   <span className="cart-price">

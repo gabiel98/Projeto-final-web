@@ -30,7 +30,8 @@ const cartController = {
       req.session.cart.push({
         productId: product._id,
         nome: product.nome,
-        preco: product.preco
+        preco: product.preco,
+        imagem: product.imagem
       });
 
       req.session.save(() => res.json({ ok: true }));
