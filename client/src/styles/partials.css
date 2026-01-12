@@ -113,6 +113,24 @@ header a:hover {
   background: #ff5252;
 }
 
+.btn-login {
+  background: var(--danger);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-login:hover {
+  background: #ff5252;
+}
+
 
 
 /* =========================
