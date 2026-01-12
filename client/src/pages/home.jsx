@@ -10,6 +10,7 @@ function Home() {
   const [userName, setUserName] = useState('')
   const [userCargo, setUserCargo] = useState('')
   const [userRole, setUserRole] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     // Buscar produtos
@@ -34,6 +35,11 @@ function Home() {
       .catch(() => setIsAuthenticated(false))
   }, [])
 
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type })
+    setTimeout(() => setNotification(null), 3000)
+  }
+
   function handleAddToCart(productId) {
     fetch('/api/cart/add', {
       method: 'POST',
@@ -43,6 +49,16 @@ function Home() {
       body: JSON.stringify({ productId }),
       credentials: 'include'
     })
+      .then(res => {
+        if (res.ok) {
+          showNotification('Produto adicionado ao carrinho com sucesso!', 'success')
+        } else {
+          showNotification('Erro ao adicionar produto ao carrinho', 'error')
+        }
+      })
+      .catch(err => {
+        showNotification('Erro ao adicionar produto ao carrinho', 'error')
+      })
   }
 
   function handleDeleteProduct(productId) {
@@ -61,28 +77,14 @@ function Home() {
     <>
       <Header />
 
+      {notification && (
+        <div className={`notification notification-${notification.type}`}>
+          {notification.message}
+        </div>
+      )}
+
       <main className="products-container">
-
-        <header className="products-header">
-          <h1>PokeShop - Itens Pokémon</h1>
-          <p>Itens e colecionáveis do universo Pokémon.</p>
-
-          {isAuthenticated ? (
-            <p className="user-info">
-              Conectado como: <strong>{userName}</strong>
-              {userCargo && ` (${userCargo})`}
-            </p>
-          ) : (
-            <p className="login-info">
-              <Link to="/login">Faça login</Link> ou{' '}
-              <Link to="/users/new">crie sua conta</Link> para aproveitar mais recursos.
-            </p>
-          )}
-
-          <Link to="/cart" className="btn-cart">
-            Ir para o carrinho
-          </Link>
-        </header>
+        <h1 className="products-title">PokeShop - Itens Pokémon</h1>
 
         <section className="products-grid">
           {produtos.map(p => (

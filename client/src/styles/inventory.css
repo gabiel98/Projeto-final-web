@@ -11,7 +11,7 @@
 :root {
   --bg-dark: #1e1e1e;
   --bg-card: #2a2a2a;
-  --primary: #ffcb05;
+  --primary: #ff5252;
   --secondary: #3b4cca;
   --text-light: #ffffff;
   --text-muted: #aaaaaa;
@@ -130,5 +130,5 @@ a {
 }
 
 a:hover {
-  text-decoration: underline;
+  color: #ff3a3a;
 }

@@ -14,7 +14,7 @@
 :root {
   --bg-dark: #1e1e1e;
   --bg-card: #2a2a2a;
-  --primary: #ffcb05;
+  --primary: #ff5252;
   --secondary: #3b4cca;
   --text-light: #ffffff;
   --text-muted: #aaaaaa;
@@ -49,24 +49,60 @@ header {
   border-bottom: 1px solid #333;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-left .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+  margin-right: 16px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-right span {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.nav-right strong {
+  color: var(--text-light);
+}
+
 header a {
   color: var(--text-light);
   text-decoration: none;
-  margin-right: 14px;
   font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 header a:hover {
-  color: #e60023;
+  color: var(--primary);
 }
 
 .btn-sair {
   background: var(--danger);
   border: none;
   color: #fff;
-  padding: 6px 50px;
+  padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn-sair:hover {
+  background: #ff5252;
 }
 
 

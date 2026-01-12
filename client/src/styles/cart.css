@@ -75,11 +75,12 @@
   background: #111;
   color: #fff;
   border-radius: 30px;
-  text-decoration: none;
   font-weight: bold;
   transition: background 0.3s;
+  text-decoration: none;
 }
 
 .btn-continue:hover {
   background: #e60023;
+  text-decoration: none;
 }
