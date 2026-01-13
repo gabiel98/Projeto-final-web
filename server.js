@@ -34,8 +34,8 @@ const { isAdmin, canManageProducts } = require('./middleware/roles');
 app.set('view engine', 'ejs'); // engine de templates
 app.set('views', './views'); // pasta das views
 
-// Servir arquivos estáticos (imagens de produtos e CSS)
-app.use('/uploads', express.static('public/uploads'));
+// Servir arquivos estáticos (imagens de produtos e banners)
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 app.use('/css', express.static('public/css'));
 
 // Middleware: interpreta bodies de formulários (application/x-www-form-urlencoded)
@@ -165,6 +165,14 @@ app.get('/api/products/:id', productController.getById);
 app.post('/api/products', canManageProducts, productController.upload.single('imagem'), productController.create);
 app.put('/api/products/:id', canManageProducts, productController.upload.single('imagem'), productController.update);
 app.delete('/api/products/:id', canManageProducts, productController.remove);
+
+// --- API REST para banners ---
+const { bannerController, uploadBanner } = require('./controllers/bannerController');
+app.get('/api/banners', bannerController.list);
+app.get('/api/banners/all', canManageProducts, bannerController.listAll);
+app.post('/api/banners', canManageProducts, uploadBanner.single('imagem'), bannerController.create);
+app.put('/api/banners/:id', canManageProducts, uploadBanner.single('imagem'), bannerController.update);
+app.delete('/api/banners/:id', canManageProducts, bannerController.delete);
 
 // Debug opcional de sessão (ativar com DEBUG_SESS=1 no .env)
 if (process.env.DEBUG_SESS === '1') {

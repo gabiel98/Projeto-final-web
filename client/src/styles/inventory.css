@@ -1,10 +1,33 @@
+/* =========================
+   PÁGINA DE INVENTÁRIO
+========================= */
+
+.inventory-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
 h1 {
-  margin-bottom: 10px;
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: var(--text-light);
+  font-weight: bold;
 }
 
 p {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   color: var(--text-muted);
+  font-size: 16px;
+}
+
+.inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e8e8e8;
 }
 
 /* GRID DE PRODUTOS */
@@ -20,7 +43,8 @@ p {
   background: var(--bg-card);
   padding: 16px;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e8e8e8;
   transition: transform 0.2s;
 }
 
@@ -51,13 +75,54 @@ button {
   background: var(--secondary);
   border: none;
   color: #fff;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 button:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 76, 202, 0.3);
+}
+
+.btn-edit {
+  background: var(--secondary);
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background: #2a3899;
+}
+
+.btn-delete {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: #e60023;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.btn-new-product {
+  background: var(--success);
+  color: #fff;
+  padding: 12px 24px;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-new-product:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
 /* LISTAS (Inventário / Carrinho) */
@@ -68,9 +133,65 @@ ul {
 
 li {
   background: var(--bg-card);
-  padding: 14px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.product-item-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.product-item-image {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.product-item-info {
+  flex: 1;
+}
+
+.product-item-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+
+.product-item-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.product-item-details {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.product-item-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 /* FORMULÁRIOS */
@@ -89,8 +210,21 @@ input, select {
 /* LINKS */
 a {
   color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 a:hover {
   color: #ff3a3a;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.empty-state p {
+  margin-bottom: 24px;
 }

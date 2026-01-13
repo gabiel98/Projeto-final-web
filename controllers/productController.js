@@ -19,7 +19,7 @@ function deleteImageFile(imagemPath) {
 
 // 🔹 Configuração do multer
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/uploads/'),
+  destination: (req, file, cb) => cb(null, 'public/uploads/products/'),
   filename: (req, file, cb) => {
     const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, unique + path.extname(file.originalname));
@@ -39,7 +39,7 @@ const upload = multer({
 });
 
 const tiposProduto = [
-  'Action Figure', 'Boneco', 'Pelúcia', 'Jogo Digital', 
+  'Boneco', 'Pelúcia', 'Jogo Digital', 
   'Jogo Físico', 'Cartas', 'Acessórios', 'Roupas', 'Outro'
 ];
 
@@ -76,7 +76,7 @@ const productController = {
   create: async (req, res) => {
     try {
       const { nome, preco, descricao, estoque, tipo } = req.body;
-      const imagem = req.file ? '/uploads/' + req.file.filename : '';
+      const imagem = req.file ? '/uploads/products/' + req.file.filename : '';
 
       const produto = await Product.create({
         nome,
@@ -114,7 +114,7 @@ const productController = {
 
       if (req.file) {
         if (produtoAtual.imagem) deleteImageFile(produtoAtual.imagem);
-        dados.imagem = '/uploads/' + req.file.filename;
+        dados.imagem = '/uploads/products/' + req.file.filename;
       }
 
       const atualizado = await Product.findByIdAndUpdate(

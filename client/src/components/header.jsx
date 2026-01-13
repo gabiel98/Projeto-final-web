@@ -56,6 +56,8 @@ export default function Header() {
           <span className="pokeshop-font">PokeShop</span>
         </Link>
 
+        <Link to="/shop">Loja</Link>
+
         {auth.isAuthenticated && (
           <Link to="/perfil">Perfil</Link>
         )}
@@ -63,7 +65,10 @@ export default function Header() {
         <Link to="/cart">Carrinho</Link>
 
         {(auth.userRole === 'dono' || auth.userRole === 'funcionario') && (
-          <Link to="/inventory">Inventário da loja</Link>
+          <>
+            <Link to="/inventory">Inventário da loja</Link>
+            <Link to="/banners">Gerenciar Banners</Link>
+          </>
         )}
 
         {auth.userRole === 'dono' && (

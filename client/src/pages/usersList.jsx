@@ -63,6 +63,9 @@ export default function UsersList() {
                 <span className="user-cargo">
                   {user.cargo || '—'}
                 </span>
+                <span className="user-role">
+                  {user.role || 'cliente'}
+                </span>
               </div>
 
               {isDono && (

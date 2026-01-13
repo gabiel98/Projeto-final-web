@@ -17,7 +17,7 @@
 .cart-empty {
   text-align: center;
   font-size: 18px;
-  color: #666;
+  color: #888888;
 }
 
 /* Lista */
@@ -37,7 +37,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e8e8e8;
 }
 
 /* Imagem do produto no carrinho */
@@ -106,8 +107,8 @@
   display: block;
   width: fit-content;
   padding: 14px 36px;
-  background: #111;
-  color: #fff;
+  background: #e0e0e0;
+  color: #5a5a5a;
   border-radius: 30px;
   font-weight: bold;
   transition: background 0.3s;
@@ -115,7 +116,7 @@
 }
 
 .btn-continue:hover {
-  background: #e60023;
+  background: #d0d0d0;
   text-decoration: none;
 }
 

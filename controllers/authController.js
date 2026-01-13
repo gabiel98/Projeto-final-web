@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
 
       req.session.userId = user._id;
       req.session.userName = user.nome;
-      req.session.userRole = user.role || 'comprador';
+      req.session.userRole = user.role || 'cliente';
       req.session.userCargo = user.cargo || '';
       req.session.serverStart = Date.now();
 

@@ -17,7 +17,9 @@
 .form-card {
   padding: 30px 35px;
   border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: var(--bg-card);
+  border: 1px solid #e8e8e8;
 }
 
 /* Campos */
@@ -72,10 +74,10 @@
 }
 
 .btn-secondary {
-  color: #555;
+  color: #888888;
   font-weight: 500;
 }
 
 .btn-secondary:hover {
-  color: #e60023;
+  color: #ff5252;
 }

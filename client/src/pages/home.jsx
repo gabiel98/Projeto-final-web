@@ -2,42 +2,54 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/header'
 import Footer from '../components/footer'
-import '../styles/produtos.css'
+import '../styles/home.css'
 
 function Home() {
+  const [banners, setBanners] = useState([])
   const [produtos, setProdutos] = useState([])
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [userRole, setUserRole] = useState('')
-  const [tipos, setTipos] = useState([])
-  const [selectedType, setSelectedType] = useState('')
+  const [currentBanner, setCurrentBanner] = useState(0)
   const [notification, setNotification] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    // Buscar produtos
+    // Buscar banners
+    fetch('/api/banners')
+      .then(res => res.json())
+      .then(data => setBanners(data))
+      .catch(() => setBanners([]))
+
+    // Buscar produtos para o carrossel
     fetch('/api/products')
       .then(res => res.json())
-      .then(data => setProdutos(data))
+      .then(data => setProdutos(data.slice(0, 12))) // Limita a 12 produtos
+      .catch(() => setProdutos([]))
 
-    // Buscar tipos para o filtro
-    fetch('/api/products/tipos')
-      .then(res => res.json())
-      .then(data => setTipos(data))
-      .catch(() => setTipos([]))
-
-    // Buscar dados do usuário logado
-    fetch('/api/me', {
-      credentials: 'include'
-    })
+    // Verificar autenticação
+    fetch('/api/me', { credentials: 'include' })
       .then(res => {
-        if (!res.ok) throw new Error()
-        return res.json()
+        if (res.ok) return res.json()
+        throw new Error()
       })
-      .then(user => {
-        setIsAuthenticated(true)
-        setUserRole(user.role)
-      })
+      .then(() => setIsAuthenticated(true))
       .catch(() => setIsAuthenticated(false))
   }, [])
+
+  // Auto-avançar banner
+  useEffect(() => {
+    if (banners.length === 0) return
+    const interval = setInterval(() => {
+      setCurrentBanner(prev => (prev + 1) % banners.length)
+    }, 5000) // Muda a cada 5 segundos
+    return () => clearInterval(interval)
+  }, [banners.length])
+
+  function nextBanner() {
+    setCurrentBanner(prev => (prev + 1) % banners.length)
+  }
+
+  function prevBanner() {
+    setCurrentBanner(prev => (prev - 1 + banners.length) % banners.length)
+  }
 
   function showNotification(message, type = 'success') {
     setNotification({ message, type })
@@ -47,139 +59,128 @@ function Home() {
   function handleAddToCart(productId) {
     fetch('/api/cart/add', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productId }),
       credentials: 'include'
     })
       .then(res => {
         if (res.ok) {
-          showNotification('Produto adicionado ao carrinho com sucesso!', 'success')
+          showNotification('Produto adicionado ao carrinho!', 'success')
         } else {
-          showNotification('Erro ao adicionar produto ao carrinho', 'error')
+          showNotification('Erro ao adicionar produto', 'error')
         }
       })
-      .catch(() => {
-        showNotification('Erro ao adicionar produto ao carrinho', 'error')
-      })
-  }
-
-  const filteredProducts = selectedType
-    ? produtos.filter(p => p.tipo === selectedType)
-    : produtos
-
-  function handleDeleteProduct(productId) {
-    if (!window.confirm('Deseja excluir este produto?')) return
-
-    fetch(`/api/products/${productId}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-      .then(() => {
-        setProdutos(produtos.filter(p => p._id !== productId))
-      })
+      .catch(() => showNotification('Erro ao adicionar produto', 'error'))
   }
 
   return (
     <>
       <Header />
 
-      <main className="products-container">
-        <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Itens Pokémon</h1>
-          <div className="products-filter">
-            <label htmlFor="type-filter">Filtrar por tipo:</label>
-            <select
-              id="type-filter"
-              value={selectedType}
-              onChange={e => setSelectedType(e.target.value)}
-            >
-              <option value="">Todos</option>
-              {tipos.map(tipo => (
-                <option key={tipo} value={tipo}>{tipo}</option>
-              ))}
-            </select>
-          </div>
-
-        <section className="products-grid">
-            {filteredProducts.map(p => (
-            <div className="product-card" key={p._id}>
-
-              {p.imagem && (
-                <img
-                  src={p.imagem}
-                  alt={p.nome}
-                  className="product-image"
-                />
-              )}
-
-              <h3 className="product-name">{p.nome}</h3>
-
-              <div className="product-price">
-                R$ {typeof p.preco === 'number'
-                  ? p.preco.toFixed(2)
-                  : p.preco}
-              </div>
-
-              <p><strong>Tipo:</strong> {p.tipo || 'Outro'}</p>
-              <p><strong>Estoque:</strong> {p.estoque || 0} unidades</p>
-              <p className="product-description">{p.descricao}</p>
-
-              <div className="product-actions">
-
-                <Link
-                  to={`/products/${p._id}`}
-                  className="btn-secondary"
-                >
-                  Ver detalhes
-                </Link>
-
-                {isAuthenticated && (
-                  <button
-                    className="btn-primary"
-                    onClick={() => handleAddToCart(p._id)}
-                  >
-                    Adicionar
-                  </button>
-                )}
-
-                {(userRole === 'dono' || userRole === 'funcionario') && (
+      <main className="home-container">
+        {/* Banner Carrossel */}
+        <section className="banner-section">
+          <div className="banner-carousel">
+            {banners.length > 0 ? (
+              <>
+                <div className="banner-slide">
+                  <img 
+                    src={banners[currentBanner].imagem} 
+                    alt={`Banner ${currentBanner + 1}`}
+                    className="banner-image"
+                  />
+                </div>
+                
+                {banners.length > 1 && (
                   <>
-                    <Link
-                      to={`/products/${p._id}/edit`}
-                      className="btn-secondary"
-                    >
-                      Editar
-                    </Link>
-
-                    <button
-                      className="btn-danger"
-                      onClick={() => handleDeleteProduct(p._id)}
-                    >
-                      Excluir
+                    <button className="banner-btn banner-prev" onClick={prevBanner}>
+                      ‹
                     </button>
+                    <button className="banner-btn banner-next" onClick={nextBanner}>
+                      ›
+                    </button>
+                    
+                    <div className="banner-dots">
+                      {banners.map((_, index) => (
+                        <span 
+                          key={index}
+                          className={`dot ${index === currentBanner ? 'active' : ''}`}
+                          onClick={() => setCurrentBanner(index)}
+                        />
+                      ))}
+                    </div>
                   </>
                 )}
-
+              </>
+            ) : (
+              <div className="banner-placeholder">
+                <h2 className="pokeshop-font">Bem-vindo à PokeShop!</h2>
+                <p>Sua loja de itens Pokémon</p>
               </div>
-            </div>
-          ))}
+            )}
+          </div>
         </section>
 
-        {(userRole === 'dono' || userRole === 'funcionario') && (
-          <div className="add-product">
-            <Link to="/products/new" className="btn-add">
-              Adicionar novo produto
+        {/* Carrossel de Produtos */}
+        <section className="products-carousel-section">
+          <h2 className="section-title">Produtos em Destaque</h2>
+          
+          <div className="products-carousel">
+            {produtos.length > 0 ? (
+              produtos.map(p => (
+                <div className="carousel-product-card" key={p._id}>
+                  {p.imagem && (
+                    <img src={p.imagem} alt={p.nome} className="carousel-product-image" />
+                  )}
+                  
+                  <h3 className="carousel-product-name">{p.nome}</h3>
+                  
+                  <div className="carousel-product-info">
+                    <div className="carousel-product-type">
+                      Tipo: {p.tipo || 'Outro'}
+                    </div>
+                    <div className="carousel-product-stock">
+                      Estoque: {p.estoque || 0} {p.estoque === 1 ? 'unidade' : 'unidades'}
+                    </div>
+                  </div>
+                  
+                  <div className="carousel-product-price">
+                    R$ {typeof p.preco === 'number' ? p.preco.toFixed(2) : p.preco}
+                  </div>
+                  
+                  <div className="carousel-product-actions">
+                    <Link to={`/products/${p._id}`} className="btn-view">
+                      Ver detalhes
+                    </Link>
+                    
+                    {isAuthenticated && (
+                      <button 
+                        className="btn-add-cart"
+                        onClick={() => handleAddToCart(p._id)}
+                      >
+                        Adicionar
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="no-products">Nenhum produto disponível no momento.</p>
+            )}
+          </div>
+
+          <div className="view-all-products">
+            <Link to="/shop" className="btn-view-all">
+              Ver todos os produtos
             </Link>
           </div>
-        )}
+        </section>
 
         {notification && (
           <div className={`notification notification-${notification.type}`}>
             {notification.message}
           </div>
         )}
-
       </main>
 
       <Footer />

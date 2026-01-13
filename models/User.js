@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
 	nome: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
 	cargo: { type: String },
-	// role: controla permissões. dono > funcionario > comprador
-	role: { type: String, enum: ['dono','funcionario','comprador'], default: 'comprador' },
+	// role: controla permissões. dono > funcionario > cliente
+	role: { type: String, enum: ['dono','funcionario','cliente'], default: 'cliente' },
 	password: { type: String, required: true },
 	criadoEm: { type: Date, default: Date.now }
 });

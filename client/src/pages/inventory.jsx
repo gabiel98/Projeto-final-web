@@ -35,53 +35,54 @@ function Inventory() {
     <>
       <Header />
 
-      <main>
-        <h1>Inventário da Loja</h1>
-        <p>Aqui você pode cadastrar, editar e excluir itens.</p>
-
-        <p>
-          <Link to="/products/new">Cadastrar novo produto</Link>
-        </p>
+      <main className="inventory-container">
+        <div className="inventory-header">
+          <div>
+            <h1>Inventário da Loja</h1>
+            <p>Gerencie os produtos da sua loja</p>
+          </div>
+          <Link to="/products/new" className="btn-new-product">
+            + Cadastrar novo produto
+          </Link>
+        </div>
 
         {(!produtos || produtos.length === 0) ? (
-          <p>Nenhum produto cadastrado.</p>
+          <div className="empty-state">
+            <p>Nenhum produto cadastrado.</p>
+          </div>
         ) : (
           <ul>
             {produtos.map(p => (
               <li key={p._id}>
-                {p.imagem && (
-                  <img
-                    src={p.imagem}
-                    alt={p.nome}
-                    style={{
-                      maxWidth: '80px',
-                      height: 'auto',
-                      verticalAlign: 'middle',
-                      marginRight: '10px'
-                    }}
-                  />
-                )}
-
-                <strong>{p.nome}</strong> — R$ {
-                  typeof p.preco === 'number'
-                    ? p.preco.toFixed(2)
-                    : p.preco
-                }
-
-                <br />
-
-                <small>
-                  Tipo: {p.tipo || 'Outro'} | Estoque: {p.estoque || 0} | {p.descricao}
-                </small>
-
-                <div style={{ marginTop: '6px' }}>
+                <div className="product-item-header">
+                  {p.imagem && (
+                    <img
+                      src={p.imagem}
+                      alt={p.nome}
+                      className="product-item-image"
+                    />
+                  )}
+                  
+                  <div className="product-item-info">
+                    <div className="product-item-name">{p.nome}</div>
+                    <div className="product-item-price">
+                      R$ {typeof p.preco === 'number' ? p.preco.toFixed(2) : p.preco}
+                    </div>
+                    <div className="product-item-details">
+                      <strong>Tipo:</strong> {p.tipo || 'Outro'} | <strong>Estoque:</strong> {p.estoque || 0} {p.estoque === 1 ? 'unidade' : 'unidades'}
+                      <br />
+                      {p.descricao}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="product-item-actions">
                   <Link to={`/products/${p._id}/edit`}>
-                    <button>Editar</button>
+                    <button className="btn-edit">Editar</button>
                   </Link>
-
                   <button
                     onClick={() => handleDelete(p._id)}
-                    style={{ color: 'red', marginLeft: '6px' }}
+                    className="btn-delete"
                   >
                     Excluir
                   </button>

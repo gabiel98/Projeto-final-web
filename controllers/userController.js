@@ -48,9 +48,9 @@ const userController = {
 
       const hashedPassword = await bcrypt.hash(senha, 10);
 
-      let roleToSet = 'comprador';
+      let roleToSet = 'cliente';
       if (req.session?.userRole === 'dono' && req.body.role) {
-        const allowed = ['dono', 'funcionario', 'comprador'];
+        const allowed = ['dono', 'funcionario', 'cliente'];
         if (allowed.includes(req.body.role)) roleToSet = req.body.role;
       }
 
@@ -113,7 +113,7 @@ const userController = {
 
       let roleEfetiva = userAtual.role;
       if (req.session?.userRole === 'dono' && req.body.role) {
-        const allowed = ['dono', 'funcionario', 'comprador'];
+        const allowed = ['dono', 'funcionario', 'cliente'];
         if (allowed.includes(req.body.role)) roleEfetiva = req.body.role;
       }
 
