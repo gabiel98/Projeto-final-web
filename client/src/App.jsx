@@ -8,9 +8,10 @@ import Footer from "./components/footer";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Perfil from "./pages/perfil";
-import Cart from "./pages/Cart";
+import Cart from "./pages/cart";
 import Inventory from "./pages/inventory";
 import ProductForm from "./pages/productForm";
+import ProductDetails from "./pages/productDetails";
 import UsersList from "./pages/usersList";
 import FormUsuario from "./pages/formUsuario";
 import EditUsuario from "./pages/editUsuario";
@@ -32,6 +33,7 @@ export default function App() {
         {/* Funcionario / Dono */}
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/products/new" element={<ProductForm />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/products/:id/edit" element={<ProductForm />} />
 
         {/* Dono */}

@@ -60,6 +60,10 @@ const cartController = {
   // 🔹 Processa a compra (checkout)
   checkout: async (req, res) => {
     try {
+      if (!req.session || !req.session.userId) {
+        return res.status(401).json({ erro: 'Faça login para finalizar a compra' });
+      }
+
       const cart = req.session.cart || [];
 
       if (!cart || cart.length === 0) {

@@ -43,6 +43,7 @@ function EditUsuario() {
         setCargosPermitidos(cargosData)
 
       } catch (err) {
+        console.error(err)
         setErro('Erro ao carregar dados do usuário')
       }
     }

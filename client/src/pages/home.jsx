@@ -8,6 +8,8 @@ function Home() {
   const [produtos, setProdutos] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userRole, setUserRole] = useState('')
+  const [tipos, setTipos] = useState([])
+  const [selectedType, setSelectedType] = useState('')
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
@@ -15,6 +17,12 @@ function Home() {
     fetch('/api/products')
       .then(res => res.json())
       .then(data => setProdutos(data))
+
+    // Buscar tipos para o filtro
+    fetch('/api/products/tipos')
+      .then(res => res.json())
+      .then(data => setTipos(data))
+      .catch(() => setTipos([]))
 
     // Buscar dados do usuário logado
     fetch('/api/me', {
@@ -57,6 +65,10 @@ function Home() {
       })
   }
 
+  const filteredProducts = selectedType
+    ? produtos.filter(p => p.tipo === selectedType)
+    : produtos
+
   function handleDeleteProduct(productId) {
     if (!window.confirm('Deseja excluir este produto?')) return
 
@@ -75,9 +87,22 @@ function Home() {
 
       <main className="products-container">
         <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Itens Pokémon</h1>
+          <div className="products-filter">
+            <label htmlFor="type-filter">Filtrar por tipo:</label>
+            <select
+              id="type-filter"
+              value={selectedType}
+              onChange={e => setSelectedType(e.target.value)}
+            >
+              <option value="">Todos</option>
+              {tipos.map(tipo => (
+                <option key={tipo} value={tipo}>{tipo}</option>
+              ))}
+            </select>
+          </div>
 
         <section className="products-grid">
-          {produtos.map(p => (
+            {filteredProducts.map(p => (
             <div className="product-card" key={p._id}>
 
               {p.imagem && (
@@ -101,6 +126,13 @@ function Home() {
               <p className="product-description">{p.descricao}</p>
 
               <div className="product-actions">
+
+                <Link
+                  to={`/products/${p._id}`}
+                  className="btn-secondary"
+                >
+                  Ver detalhes
+                </Link>
 
                 {isAuthenticated && (
                   <button
