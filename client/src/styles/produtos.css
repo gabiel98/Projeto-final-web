@@ -8,6 +8,18 @@
   font-weight:900;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Adventure';
+  src: url('../assets/fonts/Adventure.otf') format('opentype');
+  font-weight:900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Planet Jumbo';
+  src: url('../assets/fonts/Planet Jumbo.otf') format('opentype');
+  font-weight:900;
+  font-style: normal;
+}
 
 .products-container {
   max-width: 1600px;
