@@ -94,7 +94,7 @@ function Shop() {
       <Header />
 
       <main className="products-container">
-        <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Loja</h1>
+        <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Produtos</h1>
         
         <div className="products-layout">
           <aside className="products-sidebar">

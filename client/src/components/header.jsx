@@ -56,7 +56,7 @@ export default function Header() {
           <span className="pokeshop-font">PokeShop</span>
         </Link>
 
-        <Link to="/shop">Loja</Link>
+        <Link to="/shop">Produtos</Link>
 
         {auth.isAuthenticated && (
           <Link to="/perfil">Perfil</Link>
