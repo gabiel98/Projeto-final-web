@@ -65,7 +65,7 @@ main {
 /* HEADER */
 header {
   background: var(--bg-card);
-  padding: 14px 24px;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -194,10 +194,10 @@ header a:hover {
 footer {
   background: var(--bg-card);
   color: var(--text-muted);
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   border-top: 1px solid #e0e0e0;
-  font-size: 13px;
+  font-size: 10px;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.08);
   position: fixed;
   bottom: 0;

@@ -52,6 +52,7 @@
 
 .profile-links a:hover {
   background: #ff5252;
+  color: var(--btn-yellow);
   text-decoration: none;
 }
 
