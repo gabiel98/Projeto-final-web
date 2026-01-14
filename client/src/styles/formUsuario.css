@@ -15,8 +15,8 @@
 }
 
 .form-container {
-  max-width: 600px;
-  margin: 60px auto;
+  max-width: 700px;
+  margin: 50px;
   background: var(--bg-card);
   padding: 32px;
   border-radius: 14px;
@@ -28,13 +28,14 @@
   text-align: center;
   margin-bottom: 24px;
   color:#FFCB05;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
   font-size: 28px;
   font-weight: bold;
 }
 
 .form-card {
   display: flex;
+  margin: 20px;
   flex-direction: column;
   gap: 0;
 }
@@ -90,8 +91,12 @@
   margin-top: 24px;
 }
 
+
 .form-actions button {
   flex: 1;
+  display: flex;
+  align-items: center;    /* centraliza verticalmente o texto */
+  justify-content: center;/* centraliza horizontalmente */
   padding: 12px 16px;
   border-radius: 8px;
   border: none;
@@ -99,38 +104,39 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  height: 40px;          /* altura fixa para botões */
 }
 
-.btn-primary {
+
+.btn-user-add{
   background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   border: none;
-  padding: 12px 26px;
+  padding: 12px 20px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+.btn-user-add:hover {
   background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
   color: var(--btn-yellow);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
-.btn-secondary {
+.btn-user-cancel {
   background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
   color: #fff;
   border: none;
-  padding: 12px 26px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.btn-secondary:hover {
+.btn-user-cancel:hover {
   background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
   color: var(--btn-yellow);
   transform: translateY(-2px);

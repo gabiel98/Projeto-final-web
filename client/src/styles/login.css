@@ -23,7 +23,7 @@
 
 .login-title {
   color:#FFCB05;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
   font-size: 32px;
   text-align: center;
   margin-bottom: 20px;
@@ -61,7 +61,7 @@
 
 .btn-primary {
   margin-top: 10px;
-  padding: 10px;
+  padding: 12px 26px;
   background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
   color: #fff;
   border: none;

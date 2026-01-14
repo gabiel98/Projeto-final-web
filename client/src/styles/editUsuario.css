@@ -13,7 +13,7 @@
   font-size: 32px;
   margin-bottom: 30px;
   color:#FFCB05;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
 }
 
 .form-card {

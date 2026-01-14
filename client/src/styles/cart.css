@@ -10,7 +10,7 @@
 
 .cart-title {
   color:#FFCB05;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
   font-size: 32px;
   margin-bottom: 30px;
   text-align: center;

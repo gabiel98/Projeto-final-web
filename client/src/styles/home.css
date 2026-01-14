@@ -128,7 +128,7 @@
   margin-bottom: 40px;
   color: #FFCB05;
   font-family: "Adventure", sans-serif;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
 }
 
 .products-carousel {

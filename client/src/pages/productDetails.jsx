@@ -82,12 +82,12 @@ export default function ProductDetails() {
 
               <div className="detail-actions">
                 <button
-                  className="btn-primary"
+                  className="btn-details-add"
                   onClick={() => handleAddToCart(product._id)}
                 >
                   Adicionar ao carrinho
                 </button>
-                <Link to="/" className="btn-secondary">
+                <Link to="/" className="btn-details-back">
                   Voltar
                 </Link>
               </div>

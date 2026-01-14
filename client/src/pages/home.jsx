@@ -150,7 +150,7 @@ function Home() {
                   
                   <div className="carousel-product-actions">
                     <Link to={`/products/${p._id}`} className="btn-view">
-                      Ver detalhes
+                      Detalhes
                     </Link>
                     
                     {isAuthenticated && (

@@ -17,7 +17,7 @@ h1 {
 
 .inventory-title {
   color:#FFCB05;
-  text-shadow: 3px 2px 0 #ff3333;
+  text-shadow: 3px 2px 0 var(--text-light);
   font-size: 32px;
   margin-bottom: 16px;
   text-align: center;
@@ -101,7 +101,7 @@ button:hover {
   background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
   color: #fff;
   border: none;
-  padding: 10px 18px;
+  padding: 12px 26px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -120,7 +120,7 @@ button:hover {
   background: linear-gradient(135deg, var(--btn-red-start), var(--btn-red-end));
   color: #fff;
   border: none;
-  padding: 10px 18px;
+  padding: 12px 26px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -138,7 +138,7 @@ button:hover {
 .btn-new-product {
   background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
-  padding: 12px 24px;
+  padding: 12px 26px;
   text-decoration: none;
   display: inline-block;
   border-radius: 6px;

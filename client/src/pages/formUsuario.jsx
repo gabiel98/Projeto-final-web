@@ -156,12 +156,12 @@ function FormUsuario() {
           )}
 
           <div className="form-actions">
-            <button type="submit" className="btn-primary">
+            <button type="submit" className="btn-user-add">
               Adicionar Usuário
             </button>
             <button 
               type="button" 
-              className="btn-secondary"
+              className="btn-user-cancel"
               onClick={() => navigate('/users')}
             >
               Cancelar
