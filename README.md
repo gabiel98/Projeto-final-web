@@ -1,7 +1,7 @@
 # Projeto Final (Loja Pokemon)
 
 Projeto Final para a disciplina Arquitetura e Tecnologias de Sistemas WEB.  
-Alunos: Gilberto Alexsandro Almeida Pessoa; Gabriel Peixoto Menezes da Costa
+Alunos: Gabriel Peixoto Menezes da Costa; Gilberto Alexsandro Almeida Pessoa.
 
 Este é um projeto demonstrativo em Node.js usando Express, React.js e MongoDB (Mongoose). O objetivo é um CRUD de usuários e produtos com cadastro, login, sessão e proteção de rotas.
 
