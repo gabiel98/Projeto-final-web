@@ -94,7 +94,7 @@ function Shop() {
       <Header />
 
       <main className="products-container">
-        <h1 className="products-title"><span className="pokeshop-font">PokeShop</span> - Produtos</h1>
+        <h1 className="products-title"><span className="pokeshop">PokeShop</span> - Produtos</h1>
         
         <div className="products-layout">
           <aside className="products-sidebar">
@@ -143,7 +143,7 @@ function Shop() {
                   to={`/products/${p._id}`}
                   className="btn-secondary"
                 >
-                  Ver detalhes
+                  Detalhes
                 </Link>
 
                 {isAuthenticated && (

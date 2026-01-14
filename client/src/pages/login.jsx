@@ -39,7 +39,7 @@ function Login() {
       <Header />
 
       <main className="auth-container">
-        <h1>Login</h1>
+        <h1 className="login-title">Login</h1>
 
         {erro && (
           <p className="error-msg">Erro: {erro}</p>

@@ -200,24 +200,27 @@
 
 .btn-view {
   flex: 1;
-  background: #e0e0e0;
-  color: #5a5a5a;
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
   padding: 8px 12px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
   font-size: 13px;
   text-align: center;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-view:hover {
-  background: #d0d0d0;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
 }
 
 .btn-add-cart {
   flex: 1;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -225,11 +228,14 @@
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-add-cart:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .no-products {
@@ -246,21 +252,22 @@
 
 .btn-view-all {
   display: inline-block;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
   color: #fff;
   padding: 14px 40px;
-  border-radius: 30px;
+  border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
   font-size: 16px;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(59, 76, 202, 0.3);
 }
 
 .btn-view-all:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 82, 82, 0.4);
+  box-shadow: 0 6px 16px rgba(59, 76, 202, 0.4);
 }
 
 /* Notificação */

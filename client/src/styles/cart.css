@@ -9,6 +9,8 @@
 }
 
 .cart-title {
+  color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
   font-size: 32px;
   margin-bottom: 30px;
   text-align: center;
@@ -65,17 +67,21 @@
 
 /* Botão remover */
 .btn-remove {
-  background: #e60023;
+  background: linear-gradient(135deg, var(--btn-red-start), var(--btn-red-end));
   color: #fff;
   border: none;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-remove:hover {
-  background: #c2001d;
+  background: linear-gradient(135deg, var(--btn-red-end), var(--btn-red-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
 }
 
 /* Botão continuar */
@@ -88,35 +94,43 @@
 }
 
 .btn-checkout {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   border: none;
   padding: 14px 36px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-checkout:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .btn-continue {
   display: block;
   width: fit-content;
   padding: 14px 36px;
-  background: #e0e0e0;
-  color: #5a5a5a;
-  border-radius: 30px;
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
+  border-radius: 6px;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-continue:hover {
-  background: #d0d0d0;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
   text-decoration: none;
 }
 

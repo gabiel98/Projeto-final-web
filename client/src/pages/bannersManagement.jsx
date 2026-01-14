@@ -124,7 +124,7 @@ export default function BannersManagement() {
       <Header />
 
       <main className="banners-container">
-        <h1>Gerenciar Banners</h1>
+        <h1 className="banners-title">Gerenciar Banners</h1>
 
         <section className="banner-upload-section">
           <h2>Adicionar Novo Banner</h2>

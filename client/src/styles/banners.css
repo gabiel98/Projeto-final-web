@@ -13,8 +13,8 @@
   font-size: 32px;
   margin-bottom: 40px;
   color: #FFCB05;
-  font-family: "Pokemon Solid", sans-serif;
-  text-shadow: 3px 2px 0 #2A75BB;
+  font-family: "Adventure", sans-serif;
+  text-shadow: 3px 2px 0 #ff3333;
 }
 
 /* UPLOAD SECTION */
@@ -123,7 +123,7 @@
 
 .btn-toggle {
   flex: 1;
-  background: var(--secondary);
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
   color: white;
   border: none;
   padding: 8px 12px;
@@ -131,16 +131,19 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 13px;
-  transition: opacity 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-toggle:hover {
-  opacity: 0.9;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
 }
 
 .btn-danger {
   flex: 1;
-  background: var(--danger);
+  background: linear-gradient(135deg, var(--btn-red-start), var(--btn-red-end));
   color: white;
   border: none;
   padding: 8px 12px;
@@ -148,11 +151,14 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 13px;
-  transition: opacity 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-danger:hover {
-  opacity: 0.9;
+  background: linear-gradient(135deg, var(--btn-red-end), var(--btn-red-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
 }
 
 .no-banners {

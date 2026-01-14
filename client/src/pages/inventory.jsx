@@ -38,7 +38,7 @@ function Inventory() {
       <main className="inventory-container">
         <div className="inventory-header">
           <div>
-            <h1>Inventário da Loja</h1>
+            <h1 className="inventory-title">Inventário da Loja</h1>
             <p>Gerencie os produtos da sua loja</p>
           </div>
           <Link to="/products/new" className="btn-new-product">

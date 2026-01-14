@@ -17,6 +17,14 @@
   margin-bottom: 14px;
 }
 
+.profile-title {
+  color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
+  font-size: 32px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
 .profile-welcome {
   font-size: 16px;
   margin-bottom: 24px;
@@ -51,12 +59,20 @@
 }
 
 .btn-danger {
-  background: var(--danger);
+  background: linear-gradient(135deg, var(--btn-red-start), var(--btn-red-end));
+  color: #fff;
+  border: none;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 6px;
+  cursor: pointer;
   font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-danger:hover {
-  opacity: 0.9;
+  background: linear-gradient(135deg, var(--btn-red-end), var(--btn-red-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
 }

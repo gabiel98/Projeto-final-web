@@ -18,6 +18,14 @@
   margin-bottom: 20px;
 }
 
+.users-title {
+  color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
+  font-size: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
 /* LISTA */
 .users-list {
   list-style: none;
@@ -63,11 +71,19 @@
 }
 
 .btn-secondary {
-  background: var(--secondary);
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
+  border: none;
   padding: 6px 10px;
   border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  opacity: 0.9;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
 }

@@ -63,7 +63,7 @@ export default function ProductForm() {
       <Header />
 
       <main className="product-form-container">
-        <h1>{id ? 'Editar' : 'Novo'} Produto</h1>
+        <h1 className="product-form-title">{id ? 'Editar' : 'Novo'} Produto</h1>
 
         <form onSubmit={handleSubmit} className="product-form">
           <div className="form-group">

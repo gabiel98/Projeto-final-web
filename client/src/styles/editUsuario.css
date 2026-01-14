@@ -12,6 +12,8 @@
   text-align: center;
   font-size: 32px;
   margin-bottom: 30px;
+  color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
 }
 
 .form-card {
@@ -59,25 +61,37 @@
 
 /* Botões */
 .btn-primary {
-  background: #e60023;
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   border: none;
   padding: 12px 26px;
-  border-radius: 30px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background: #c2001d;
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .btn-secondary {
-  color: #888888;
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 6px;
+  cursor: pointer;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  color: #ff5252;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
 }

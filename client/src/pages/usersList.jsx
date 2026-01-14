@@ -44,7 +44,7 @@ export default function UsersList() {
       <Header />
 
       <main className="users-container">
-        <h1>Gerenciar Usuários</h1>
+        <h1 className='users-title'>Gerenciar Usuários</h1>
 
         {isDono && (
           <button

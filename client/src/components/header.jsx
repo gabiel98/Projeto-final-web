@@ -52,9 +52,11 @@ export default function Header() {
     <header className="header">
       <div className="nav-left">
         <Link to="/" className="logo">
-          <img src="/logo/logo.png" alt="PokeShop Logo" className="logo-img" />
+          <img src="/logo/logo-borda.png" alt="PokeShop Logo" className="logo-img" />
           <span className="pokeshop-font">PokeShop</span>
         </Link>
+
+        <Link to="/">Início</Link>
 
         <Link to="/shop">Produtos</Link>
 

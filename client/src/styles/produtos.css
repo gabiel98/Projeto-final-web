@@ -29,6 +29,7 @@
 
 .products-title {
   color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
   font-size: 30px;
   margin-bottom: 30px;
   text-align: center;
@@ -108,7 +109,8 @@
   min-width: 200px;
 }
 
-.pokeshop-font {
+.pokeshop {
+  font-size: 30px;
   font-family: "Pokemon Solid",sans-serif;
   text-shadow: 4px 2px 0 #2A75BB;
 }
@@ -176,7 +178,7 @@
 
 /* Botões */
 .btn-primary {
-  background: #ff5252;
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -185,7 +187,7 @@
   font-weight: 600;
   font-size: 13px;
   text-decoration: none;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   flex: 1;
   min-width: 70px;
   text-align: center;
@@ -196,20 +198,23 @@
 }
 
 .btn-primary:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
   text-decoration: none;
 }
 
 .btn-secondary {
-  background: #e0e0e0;
-  color: #5a5a5a;
-  padding: 6px 12px;
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
+  padding: 6px;
   border-radius: 6px;
   border: none;
   text-decoration: none;
   font-weight: 600;
   font-size: 13px;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   flex: 1;
   min-width: 70px;
   text-align: center;
@@ -221,12 +226,15 @@
 }
 
 .btn-secondary:hover {
-  background: #d0d0d0;
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
   text-decoration: none;
 }
 
 .btn-danger {
-  background: #ff5252;
+  background: linear-gradient(135deg, var(--btn-red-start), var(--btn-red-end));
   border: none;
   color: #fff;
   cursor: pointer;
@@ -235,7 +243,7 @@
   font-weight: 600;
   font-size: 13px;
   text-decoration: none;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   flex: 1;
   min-width: 70px;
   text-align: center;
@@ -246,7 +254,10 @@
 }
 
 .btn-danger:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-red-end), var(--btn-red-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
   text-decoration: none;
 }
 
@@ -292,18 +303,23 @@
 }
 
 .btn-add {
-  background: #ff5252;
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
   color: #fff;
   padding: 14px 36px;
-  border-radius: 30px;
+  border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   display: inline-block;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-add:hover {
-  background: #ff3a3a;
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 /* Página de detalhes */

@@ -27,7 +27,8 @@
 .form-title {
   text-align: center;
   margin-bottom: 24px;
-  color: var(--text-light);
+  color:#FFCB05;
+  text-shadow: 3px 2px 0 #ff3333;
   font-size: 28px;
   font-weight: bold;
 }
@@ -101,22 +102,37 @@
 }
 
 .btn-primary {
-  background: var(--secondary);
-  color: var(--text-light);
+  background: linear-gradient(135deg, var(--btn-green-start), var(--btn-green-end));
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background: #2a3899;
-  box-shadow: 0 4px 12px rgba(59, 76, 202, 0.3);
+  background: linear-gradient(135deg, var(--btn-green-end), var(--btn-green-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .btn-secondary {
-  background: #333333;
-  color: var(--text-light);
-  border: 1px solid #444444;
+  background: linear-gradient(135deg, var(--btn-blue-start), var(--btn-blue-end));
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background: #444444;
-  border-color: var(--secondary);
+  background: linear-gradient(135deg, var(--btn-blue-end), var(--btn-blue-start));
+  color: var(--btn-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 76, 202, 0.3);
 }

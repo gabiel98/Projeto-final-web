@@ -43,7 +43,7 @@ function Perfil() {
       <Header />
 
       <main className="profile-container">
-        <h1>Meu Perfil</h1>
+        <h1 className="profile-title">Meu Perfil</h1>
 
         <p className="profile-welcome">
           Olá, <strong>{nome}</strong>!
